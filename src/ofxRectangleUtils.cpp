@@ -359,6 +359,31 @@ void ofCascade(vector<ofRectangle*>& rects,
 }
 
 
+//--------------------------------------------------------------
+void ofStackHorzizontal(vector<ofRectangle*>& rects, float startX) {
+    for(size_t i = 0; i < rects.size(); i++) {
+        rects[i]->standardize(); // make sure
+        if(i == 0) {
+            rects[i]->setX(startX);
+        } else {
+            rects[i]->setX(rects[i-1]->getRight());
+        }
+    }    
+}
+
+//--------------------------------------------------------------
+void ofStackVertical(vector<ofRectangle*>& rects, float startY) {
+    for(size_t i = 0; i < rects.size(); i++) {
+        rects[i]->standardize(); // make sure
+        if(i == 0) {
+            rects[i]->setY(startY);
+        } else {
+            rects[i]->setY(rects[i-1]->getBottom());
+        }
+    }
+}
+
+
 bool ofPack(vector<ofRectangle*>& rects,
             const ofRectangle& boundingRect) {
 

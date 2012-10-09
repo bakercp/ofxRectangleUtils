@@ -91,13 +91,20 @@ void ofDistribute(vector<ofRectangle*>& rects,
                   const ofAlignHorz& horzAnchor,
                   const ofAlignVert& vertAnchor);
 
+void ofStackHorzizontal(vector<ofRectangle*>& rects, float startX = 0);
+void ofStackVertical(vector<ofRectangle*>& rects, float startY = 0);
+
 void ofCascade(vector<ofRectangle*>& rects,
                const ofRectangle& boundingRect,
                const ofPoint& offset);
 
 
+
 bool ofPack(vector<ofRectangle*>& rects,
             const ofRectangle& boundingRect);
+
+
+
 
 ////    static void stack(vector<ofRectangle*>& rects, 
 ////                      ofxMuiAlign selfAlign = ALIGN_LEFT,
