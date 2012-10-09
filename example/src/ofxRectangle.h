@@ -41,7 +41,22 @@ public:
         
     }
     
-    bool draw() {
+    bool draw(int index) {
+        
+        int bmLineHeight = 12;
+        
+        stringstream ss;
+        ss << " idx:[" + ofToString(index) + "]" << endl;
+        ss << " x/y:[" + ofToString(getLeft()) + "," + ofToString(getTop()) + "]" << endl;
+        ss << "peri:[" + ofToString(getPerimeter()) + "]" << endl;
+        ss << "area:[" + ofToString(getArea()) + "]" << endl;
+        ss << "size:[" + ofToString(width,0) + "x" + ofToString(height,0) + "]" << endl;
+
+        ofFill();
+        ofSetColor(255,127);
+        ofDrawBitmapString(ss.str(), getLeft() + 2, getTop() + 12);
+
+
         
         ofPoint rectCenter = getCenter();
         
