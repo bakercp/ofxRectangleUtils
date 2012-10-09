@@ -14,15 +14,15 @@ void testApp::setup(){
     // create a random set of rectangles to play with
     for(int i = 0; i < 10; i++) {
         // random coordinates
-        float w = ofRandom(50,150);
-        float h = ofRandom(50,150);
-        float x = ofRandom(0, ofGetWidth()  - w);
-        float y = ofRandom(0, ofGetHeight() - h);
+        float w = floor(ofRandom(70,200));
+        float h = floor(ofRandom(70,200));
+        float x = floor(ofRandom(0, ofGetWidth()  - w));
+        float y = floor(ofRandom(0, ofGetHeight() - h));
         
         ofxRectangle rect(ofRectangle(x,y,w,h),
-                          ofColor(ofRandom(100,255),
-                                  ofRandom(100,255),
-                                  ofRandom(100,255)));
+                          ofColor(floor(ofRandom(100,255)),
+                                  floor(ofRandom(100,255)),
+                                  floor(ofRandom(100,255))));
                           
         // add the random rectangle
         rectangles.push_back(rect);
@@ -125,7 +125,7 @@ void testApp::draw(){
     
     // draw all of our rectangles
     for(size_t i = 0; i < rectangles.size(); i++) {
-        rectangles[i].draw();
+        rectangles[i].draw(i);
     }
     
     // draw our bounding box rectangle
