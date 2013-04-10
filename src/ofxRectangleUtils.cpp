@@ -1,26 +1,26 @@
-/*==============================================================================
- 
- Copyright (c) 2009-2012 Christopher Baker <http://christopherbaker.net>
- 
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
- 
- The above copyright notice and this permission notice shall be included in
- all copies or substantial portions of the Software.
- 
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- THE SOFTWARE.
- 
- ==============================================================================*/
+// =============================================================================
+//
+// Copyright (c) 2009-2013 Christopher Baker <http://christopherbaker.net>
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+// =============================================================================
 
 #include "ofxRectangleUtils.h"
 
@@ -39,14 +39,14 @@ bool sortByAbsHeight( ofRectangle* r0, ofRectangle* r1) { return (fabs(r0->getHe
 bool sortByArea(      ofRectangle* r0, ofRectangle* r1) { return (r0->getArea()) < (r1->getArea()); }
 bool sortByPerimeter( ofRectangle* r0, ofRectangle* r1) { return (r0->getPerimeter() < r1->getPerimeter()); }
 
-//--------------------------------------------------------------
+//------------------------------------------------------------------------------
 void ofCanonicalize(vector<ofRectangle*>& rects) {
     for(size_t i = 0; i < rects.size(); i++) {
         rects[i]->standardize();
     }
 }
 
-//--------------------------------------------------------------
+//------------------------------------------------------------------------------
 void ofSortByHorzAnchor(vector<ofRectangle*>& rects,
                         const ofAlignHorz& horzAnchor) {
     
@@ -68,7 +68,7 @@ void ofSortByHorzAnchor(vector<ofRectangle*>& rects,
     }
 }
 
-//--------------------------------------------------------------
+//------------------------------------------------------------------------------
 void ofSortByVertAnchor(vector<ofRectangle*>& rects,
                         const ofAlignVert& vertAnchor) {
 
@@ -91,77 +91,77 @@ void ofSortByVertAnchor(vector<ofRectangle*>& rects,
 }
 
 
-//--------------------------------------------------------------
+//------------------------------------------------------------------------------
 void ofSortByX(vector<ofRectangle*>& rects) {
     sort(rects.begin(), rects.end(), sortByX);
 }
 
-//--------------------------------------------------------------
+//------------------------------------------------------------------------------
 void ofSortByY(vector<ofRectangle*>& rects) {
     sort(rects.begin(), rects.end(), sortByY);
 }
 
-//--------------------------------------------------------------
+//------------------------------------------------------------------------------
 void ofSortByLeft(vector<ofRectangle*>& rects) {
     sort(rects.begin(), rects.end(), sortByLeft);
 }
 
-//--------------------------------------------------------------
+//------------------------------------------------------------------------------
 void ofSortByTop(vector<ofRectangle*>& rects) {
     sort(rects.begin(), rects.end(), sortByTop);
 }
 
-//--------------------------------------------------------------
+//------------------------------------------------------------------------------
 void ofSortByRight(vector<ofRectangle*>& rects) {
     sort(rects.begin(), rects.end(), sortByRight);
 }
 
-//--------------------------------------------------------------
+//------------------------------------------------------------------------------
 void ofSortByBottom(vector<ofRectangle*>& rects) {
     sort(rects.begin(), rects.end(), sortByBottom);
 }
 
-//--------------------------------------------------------------
+//------------------------------------------------------------------------------
 void ofSortByHorzCenter(vector<ofRectangle*>& rects) {
     sort(rects.begin(), rects.end(), sortByHorzCenter);
 }
 
-//--------------------------------------------------------------
+//------------------------------------------------------------------------------
 void ofSortByVertCenter(vector<ofRectangle*>& rects) {
     sort(rects.begin(), rects.end(), sortByVertCenter);
 }
 
-//--------------------------------------------------------------
+//------------------------------------------------------------------------------
 void ofSortByWidth(vector<ofRectangle*>& rects) {
     sort(rects.begin(), rects.end(), sortByWidth);
 }
 
-//--------------------------------------------------------------
+//------------------------------------------------------------------------------
 void ofSortByHeight(vector<ofRectangle*>& rects) {
     sort(rects.begin(), rects.end(), sortByHeight);
 }
 
-//--------------------------------------------------------------
+//------------------------------------------------------------------------------
 void ofSortByAbsWidth(vector<ofRectangle*>& rects) {
     sort(rects.begin(), rects.end(), sortByAbsWidth);
 }
 
-//--------------------------------------------------------------
+//------------------------------------------------------------------------------
 void ofSortByAbsHeight(vector<ofRectangle*>& rects) {
     sort(rects.begin(), rects.end(), sortByAbsHeight);
 }
 
-//--------------------------------------------------------------
+//------------------------------------------------------------------------------
 void ofSortByArea(vector<ofRectangle*>& rects) {
     sort(rects.begin(), rects.end(), sortByArea);
 }
 
-//--------------------------------------------------------------
+//------------------------------------------------------------------------------
 void ofSortByPerimeter(vector<ofRectangle*>& rects) {
     sort(rects.begin(), rects.end(), sortByPerimeter);
 }
 
-//--------------------------------------------------------------
+//------------------------------------------------------------------------------
 ofRectangle ofGetBoundingBox(vector<ofRectangle*>& rects) {
     ofRectangle result;
     
@@ -176,7 +176,8 @@ ofRectangle ofGetBoundingBox(vector<ofRectangle*>& rects) {
     return result;
 }
 
-//--------------------------------------------------------------
+
+//------------------------------------------------------------------------------
 void ofAlign(vector<ofRectangle*>& rects,
              const ofAlignHorz& horzAnchor,
              const ofAlignVert& vertAnchor) {
@@ -185,7 +186,7 @@ void ofAlign(vector<ofRectangle*>& rects,
     ofAlignVertical(rects,vertAnchor);
 }
 
-//--------------------------------------------------------------
+//------------------------------------------------------------------------------
 void ofAlignHorizontal(vector<ofRectangle*>& rects,
                        const ofAlignHorz& horzAnchor) {
 
@@ -205,7 +206,7 @@ void ofAlignHorizontal(vector<ofRectangle*>& rects,
 
 }
 
-//--------------------------------------------------------------
+//------------------------------------------------------------------------------
 void ofAlignVertical(vector<ofRectangle*>& rects,
                      const ofAlignVert& vertAnchor) {
     
@@ -254,7 +255,7 @@ void ofDistributeHorizontal(vector<ofRectangle*>& rects,
     }
 }
 
-//--------------------------------------------------------------
+//------------------------------------------------------------------------------
 void ofDistributeHorizontal(vector<ofRectangle*>& rects,
                             const ofAlignHorz& horzAnchor) {
     
@@ -264,7 +265,7 @@ void ofDistributeHorizontal(vector<ofRectangle*>& rects,
 
 }
 
-//--------------------------------------------------------------
+//------------------------------------------------------------------------------
 void ofDistributeVertical(vector<ofRectangle*>& rects,
                           const ofRectangle& boundingRect,
                           const ofAlignVert& vertAnchor) {
@@ -292,7 +293,7 @@ void ofDistributeVertical(vector<ofRectangle*>& rects,
     }
 }
 
-//--------------------------------------------------------------
+//------------------------------------------------------------------------------
 void ofDistributeVertical(vector<ofRectangle*>& rects,
                           const ofAlignVert& vertAnchor) {
    
@@ -301,7 +302,7 @@ void ofDistributeVertical(vector<ofRectangle*>& rects,
                          vertAnchor);
 }
 
-//--------------------------------------------------------------
+//------------------------------------------------------------------------------
 void ofDistribute(vector<ofRectangle*>& rects,
                   const ofRectangle& boundingRect,
                   const ofAlignHorz& horzAnchor,
@@ -314,7 +315,7 @@ void ofDistribute(vector<ofRectangle*>& rects,
                          boundingRect,
                          vertAnchor);
 }
-//--------------------------------------------------------------
+//------------------------------------------------------------------------------
 void ofDistribute(vector<ofRectangle*>& rects,
                   const ofAlignHorz& horzAnchor,
                   const ofAlignVert& vertAnchor) {
@@ -327,7 +328,7 @@ void ofDistribute(vector<ofRectangle*>& rects,
                  vertAnchor);
 }
 
-//--------------------------------------------------------------
+//------------------------------------------------------------------------------
 void ofCascade(vector<ofRectangle*>& rects,
                const ofRectangle& boundingRect,
                const ofPoint& offset) {
@@ -359,7 +360,7 @@ void ofCascade(vector<ofRectangle*>& rects,
 }
 
 
-//--------------------------------------------------------------
+//------------------------------------------------------------------------------
 void ofStackHorzizontal(vector<ofRectangle*>& rects, float startX) {
     for(size_t i = 0; i < rects.size(); i++) {
         rects[i]->standardize(); // make sure
@@ -371,7 +372,7 @@ void ofStackHorzizontal(vector<ofRectangle*>& rects, float startX) {
     }    
 }
 
-//--------------------------------------------------------------
+//------------------------------------------------------------------------------
 void ofStackVertical(vector<ofRectangle*>& rects, float startY) {
     for(size_t i = 0; i < rects.size(); i++) {
         rects[i]->standardize(); // make sure
@@ -481,7 +482,7 @@ bool ofPack(vector<ofRectangle*>& rects,
 //}
 //
 //
-////--------------------------------------------------------------
+////------------------------------------------------------------------------------
 //void ofxMuiRectUtils::wrap(vector<ofRectangle*>& rects, 
 //                           ofRectangle& boundingBox,
 //                           float horizontalSpace,
@@ -532,7 +533,7 @@ bool ofPack(vector<ofRectangle*>& rects,
 //    
 //}
 ///*
-////--------------------------------------------------------------
+////------------------------------------------------------------------------------
 //void ofxMuiRectUtils::tile(vector<ofRectangle*>& rects, ofRectangle& boundingBox) {
 //}
 // */

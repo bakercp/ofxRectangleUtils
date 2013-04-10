@@ -1,7 +1,7 @@
-#include "testApp.h"
+#include "ofApp.h"
 
 //--------------------------------------------------------------
-void testApp::setup(){
+void ofApp::setup(){
     
     ofSetFrameRate(30);
     
@@ -56,7 +56,7 @@ void testApp::setup(){
 }
 
 //--------------------------------------------------------------
-void testApp::update(){
+void ofApp::update(){
 
     ofPoint mouse(ofGetMouseX(),ofGetMouseY());
 
@@ -116,7 +116,7 @@ void testApp::update(){
 }
 
 //--------------------------------------------------------------
-void testApp::draw(){
+void ofApp::draw(){
     ofBackground(0);
     
     ofFill();
@@ -192,7 +192,7 @@ void testApp::draw(){
 }
 
 //--------------------------------------------------------------
-void testApp::keyPressed(int key){
+void ofApp::keyPressed(int key){
 //    if(key == OF_KEY_UP) {
 //        for(size_t i = 0; i < selectedRects.size(); i++) {
 //            selectedRects[i]->vAlign = OF_ALIGN_VERT_TOP;
@@ -275,13 +275,13 @@ void testApp::keyPressed(int key){
 }
 
 //--------------------------------------------------------------
-void testApp::keyReleased(int key){}
+void ofApp::keyReleased(int key){}
 
 //--------------------------------------------------------------
-void testApp::mouseMoved(int x, int y ){}
+void ofApp::mouseMoved(int x, int y ){}
 
 //--------------------------------------------------------------
-void testApp::mouseDragged(int x, int y, int button){
+void ofApp::mouseDragged(int x, int y, int button){
     if(draggingRectPtr != NULL) {
         draggingRectPtr->setPosition(ofPoint(x,y) - draggingRectPtr->dragOffset);
         
@@ -297,7 +297,7 @@ void testApp::mouseDragged(int x, int y, int button){
 }
 
 //--------------------------------------------------------------
-void testApp::mousePressed(int x, int y, int button){
+void ofApp::mousePressed(int x, int y, int button){
     
     dragStart = ofPoint(x,y);  // set a new drag start point
     
@@ -344,16 +344,16 @@ void testApp::mousePressed(int x, int y, int button){
 }
 
 //--------------------------------------------------------------
-void testApp::mouseReleased(int x, int y, int button){
+void ofApp::mouseReleased(int x, int y, int button){
     draggingRectPtr = NULL;
     isSelecting     = false;
 }
 
 //--------------------------------------------------------------
-void testApp::windowResized(int w, int h){}
+void ofApp::windowResized(int w, int h){}
 
 //--------------------------------------------------------------
-void testApp::gotMessage(ofMessage msg){}
+void ofApp::gotMessage(ofMessage msg){}
 
 //--------------------------------------------------------------
-void testApp::dragEvent(ofDragInfo dragInfo){}
+void ofApp::dragEvent(ofDragInfo dragInfo){}
