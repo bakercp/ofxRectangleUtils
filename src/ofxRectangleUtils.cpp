@@ -488,20 +488,21 @@ void RectangleUtils::stackVert(RectanglePointers& rects, float offsetY)
 }
 
 
-//void RectangleUtils::pack(RectanglePointers& rects,
-//                     RectanglePointers& packed,
-//                     RectanglePointers& unpacked,
-//                     const ofRectangle& boundingRect)
-//{
-//    
-//}
+void RectangleUtils::pack(RectanglePointers& rects,
+                          const ofRectangle& boundingRect)
+{
+    ofRectanglePacker packer(boundingRect);
 
-//void RectangleUtils::pack(RectanglePointers& rects,
-//                          RectanglePointers& packed,
-//                          RectanglePointers& unpacked)
-//{
-//    return pack(rects, packed, packed,getBoundingBox(rects));
-//}
+    for(size_t i = 0; i < rects.size(); i++)
+    {
+        if (!packer.pack(*rects[i])) return;
+    }
+}
+
+void RectangleUtils::pack(RectanglePointers& rects)
+{
+    return pack(rects, getBoundingBox(rects));
+}
 
 
 //bool ofPack(RectanglePointers& rects,

@@ -87,6 +87,7 @@
 		E7E077E415D3B63C0020DFD4 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
 		E7E077E715D3B6510020DFD4 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		E7F985F515E0DE99003869B5 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = /System/Library/Frameworks/Accelerate.framework; sourceTree = "<absolute>"; };
+		FD895E91193593370068254B /* ofRectanglePacker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ofRectanglePacker.h; path = ../src/ofRectanglePacker.h; sourceTree = "<group>"; };
 		c0924af002081c6b8cb7521356b73592 /* ofBaseOnlineRectanglePacker.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofBaseOnlineRectanglePacker.h; path = ../../../addons/ofxRectangleUtils/src/ofBaseOnlineRectanglePacker.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -124,6 +125,7 @@
 				c0924af002081c6b8cb7521356b73592 /* ofBaseOnlineRectanglePacker.h */,
 				5af421f0b0842dcccce9096ee414d012 /* ofxRectangleUtils.cpp */,
 				0504119ae1edfc15e26a9aeade3d14b3 /* ofxRectangleUtils.h */,
+				FD895E91193593370068254B /* ofRectanglePacker.h */,
 			);
 			name = src;
 			sourceTree = "<group>";

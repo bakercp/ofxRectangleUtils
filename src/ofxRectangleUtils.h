@@ -29,6 +29,7 @@
 #include <vector>
 #include "ofConstants.h"
 #include "ofRectangle.h"
+#include "ofRectanglePacker.h"
 
 
 namespace ofx {
@@ -133,14 +134,10 @@ public:
                         const ofVec2f& offset = ofVec2f(0,0));
     
     // packing
-//    static void pack(RectanglePointers& rects,
-//                     RectanglePointers& packed,
-//                     RectanglePointers& unpacked,
-//                     const ofRectangle& boundingRect);
-//
-//    static void pack(RectanglePointers& rects,
-//                     RectanglePointers& packed,
-//                     RectanglePointers& unpacked);
+    static void pack(RectanglePointers& rects,
+                     const ofRectangle& boundingRect);
+
+    static void pack(RectanglePointers& rects);
 
 
 private:

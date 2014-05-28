@@ -298,11 +298,11 @@ void ofApp::keyPressed(int key)
         RectangleUtils::distributeVert(selectedRects,vAlign);
     } else if (key == 'p') {
 
-//        RectangleUtils::pack(selectedRects,ofRectangle(0,
-//                                                       0,
-//                                                       ofGetWidth(),
-//                                                       ofGetHeight()));
-//
+        RectangleUtils::pack(selectedRects,ofRectangle(0,
+                                                       0,
+                                                       ofGetWidth(),
+                                                       ofGetHeight()));
+
 
     } else if (key == ' ') {
         showKeyboardCommands = !showKeyboardCommands;
