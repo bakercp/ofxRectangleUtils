@@ -22,68 +22,159 @@
 //
 // =============================================================================
 
+
 #include "ofxRectangleUtils.h"
 
-bool sortByX(         ofRectangle* r0, ofRectangle* r1) { return (r0->getX() < r1->getX()); }
-bool sortByY(         ofRectangle* r0, ofRectangle* r1) { return (r0->getY() < r1->getY()); }
-bool sortByLeft(      ofRectangle* r0, ofRectangle* r1) { return (r0->getMinX() < r1->getMinX()); }
-bool sortByTop(       ofRectangle* r0, ofRectangle* r1) { return (r0->getMinY() < r1->getMinY()); }
-bool sortByRight(     ofRectangle* r0, ofRectangle* r1) { return (r0->getMaxX() < r1->getMaxX()); }
-bool sortByBottom(    ofRectangle* r0, ofRectangle* r1) { return (r0->getMaxY() < r1->getMaxY()); }
-bool sortByHorzCenter(ofRectangle* r0, ofRectangle* r1) { return (r0->getCenter().x > r1->getCenter().x); }
-bool sortByVertCenter(ofRectangle* r0, ofRectangle* r1) { return (r0->getCenter().y < r1->getCenter().y); }
-bool sortByWidth(     ofRectangle* r0, ofRectangle* r1) { return (r0->getWidth()  < r1->getWidth() ); }
-bool sortByHeight(    ofRectangle* r0, ofRectangle* r1) { return (r0->getHeight() < r1->getHeight()); }
-bool sortByAbsWidth(  ofRectangle* r0, ofRectangle* r1) { return (fabs(r0->getWidth())  < fabs(r1->getWidth()) ); }
-bool sortByAbsHeight( ofRectangle* r0, ofRectangle* r1) { return (fabs(r0->getHeight()) < fabs(r1->getHeight())); }
-bool sortByArea(      ofRectangle* r0, ofRectangle* r1) { return (r0->getArea()) < (r1->getArea()); }
-bool sortByPerimeter( ofRectangle* r0, ofRectangle* r1) { return (r0->getPerimeter() < r1->getPerimeter()); }
 
-//------------------------------------------------------------------------------
-void ofCanonicalize(vector<ofRectangle*>& rects) {
-    for(size_t i = 0; i < rects.size(); i++) {
-        rects[i]->standardize();
+namespace ofx {
+
+
+void RectangleUtils::standardize(RectanglePointers& rects)
+{
+    for(RectanglePointersIter iter = rects.begin(); iter != rects.end(); ++iter)
+    {
+        (*iter)->standardize();
     }
 }
 
-//------------------------------------------------------------------------------
-void ofSortByHorzAnchor(vector<ofRectangle*>& rects,
-                        const ofAlignHorz& horzAnchor) {
+
+//bool RectangleUtils::isInside(const ofRectangle& r0, const ofRectangle& r1)
+//{
+//    return  isInside(r0,r1.x, r1.y) &&
+//            isInside(r0,(r1.x + r1.width), (r1.y+ r1.height));
+//}
+
+
+//bool RectangleUtils::isInside(const ofRectangle& r0, const float& px, const float& py)
+//{
+//    return px > r0.x &&
+//           py > r0.y &&
+//           px < (r0.x + r0.width) &&
+//           py < (r0.y + r0.height);
+//}
+
+
+bool RectangleUtils::compareByX(ofRectangle* r0, ofRectangle* r1)
+{
+    return r0->getX() < r1->getX();
+}
+
+
+bool RectangleUtils::compareByY(ofRectangle* r0, ofRectangle* r1)
+{
+    return r0->getY() < r1->getY();
+}
+
+
+bool RectangleUtils::compareByLeft(ofRectangle* r0, ofRectangle* r1)
+{
+    return r0->getMinX() < r1->getMinX();
+}
+
+
+bool RectangleUtils::compareByTop(ofRectangle* r0, ofRectangle* r1)
+{
+    return r0->getMinY() < r1->getMinY();
+}
+
+
+bool RectangleUtils::compareByRight(ofRectangle* r0, ofRectangle* r1)
+{
+    return r0->getMaxX() < r1->getMaxX();
+}
+
+
+bool RectangleUtils::compareByBottom(ofRectangle* r0, ofRectangle* r1)
+{
+    return r0->getMaxY() < r1->getMaxY();
+}
+
+
+bool RectangleUtils::compareByHorzCenter(ofRectangle* r0, ofRectangle* r1)
+{
+    return r0->getCenter().x > r1->getCenter().x;
+}
+
+
+bool RectangleUtils::compareByVertCenter(ofRectangle* r0, ofRectangle* r1)
+{
+    return r0->getCenter().y < r1->getCenter().y;
+}
+
+
+bool RectangleUtils::compareByWidth(ofRectangle* r0, ofRectangle* r1)
+{
+    return r0->getWidth() < r1->getWidth();
+}
+
+
+bool RectangleUtils::compareByHeight(ofRectangle* r0, ofRectangle* r1)
+{
+    return r0->getHeight() < r1->getHeight();
+}
+
+
+bool RectangleUtils::compareByAbsWidth(ofRectangle* r0, ofRectangle* r1)
+{
+    return std::abs(r0->getWidth()) < std::abs(r1->getWidth());
+}
+
+
+bool RectangleUtils::compareByAbsHeight(ofRectangle* r0, ofRectangle* r1)
+{
+    return std::abs(r0->getHeight()) < std::abs(r1->getHeight());
+}
+
+
+bool RectangleUtils::compareByArea(ofRectangle* r0, ofRectangle* r1)
+{
+    return r0->getArea() < r1->getArea();
+}
     
+
+bool RectangleUtils::compareByPerimeter(ofRectangle* r0, ofRectangle* r1)
+{
+    return r0->getPerimeter() < r1->getPerimeter();
+}
+
+
+void RectangleUtils::sortByHorzAnchor(RectanglePointers& rects,
+                                      ofAlignHorz horzAnchor)
+{    
     switch(horzAnchor) {
         case OF_ALIGN_HORZ_IGNORE:
             ofLogVerbose("ofSortByHorzAnchor") << "horzAnchor = OF_ALIGN_HORZ_IGNORE.  Skipping sort.";
             break;
         case OF_ALIGN_HORZ_LEFT:
-            ofSortByLeft(rects);
+            sortByLeft(rects);
             break;
         case OF_ALIGN_HORZ_RIGHT:
-            ofSortByRight(rects);
+            sortByRight(rects);
             break;
         case OF_ALIGN_HORZ_CENTER:
-            ofSortByHorzCenter(rects);
+            sortByHorzCenter(rects);
             break;
         default:
-            ofLogError("ofSortByHorzAnchor") << "Unknown ofAlignHorz value.";
+            ofLogError("RectangleUtils::sortByHorzAnchor") << "Unknown ofAlignHorz value: " << horzAnchor;
     }
 }
 
-//------------------------------------------------------------------------------
-void ofSortByVertAnchor(vector<ofRectangle*>& rects,
-                        const ofAlignVert& vertAnchor) {
 
+void RectangleUtils::sortByVertAnchor(RectanglePointers& rects,
+                                      ofAlignVert vertAnchor)
+{
     switch(vertAnchor) {
         case OF_ALIGN_VERT_IGNORE:
             ofLogVerbose("ofSortByHorzAnchor") << "horzAnchor = OF_ALIGN_HORZ_IGNORE.  Skipping sort.";
             break;
         case OF_ALIGN_VERT_TOP:
-            ofSortByTop(rects);
+            sortByTop(rects);
             break;
         case OF_ALIGN_VERT_BOTTOM:
-            ofSortByBottom(rects);
+            sortByBottom(rects);
             break;
         case OF_ALIGN_VERT_CENTER:
-            ofSortByVertCenter(rects);
+            sortByVertCenter(rects);
             break;
         default:
             ofLogError("ofSortByVertAnchor") << "Unknown ofAlignVert value.";
@@ -91,85 +182,104 @@ void ofSortByVertAnchor(vector<ofRectangle*>& rects,
 }
 
 
-//------------------------------------------------------------------------------
-void ofSortByX(vector<ofRectangle*>& rects) {
-    sort(rects.begin(), rects.end(), sortByX);
+
+void RectangleUtils::sortByX(RectanglePointers& rects)
+{
+    std::sort(rects.begin(), rects.end(), compareByX);
 }
 
-//------------------------------------------------------------------------------
-void ofSortByY(vector<ofRectangle*>& rects) {
-    sort(rects.begin(), rects.end(), sortByY);
+
+void RectangleUtils::sortByY(RectanglePointers& rects)
+{
+    std::sort(rects.begin(), rects.end(), compareByY);
 }
 
-//------------------------------------------------------------------------------
-void ofSortByLeft(vector<ofRectangle*>& rects) {
-    sort(rects.begin(), rects.end(), sortByLeft);
+
+void RectangleUtils::sortByLeft(RectanglePointers& rects)
+{
+    std::sort(rects.begin(), rects.end(), compareByLeft);
 }
 
-//------------------------------------------------------------------------------
-void ofSortByTop(vector<ofRectangle*>& rects) {
-    sort(rects.begin(), rects.end(), sortByTop);
+
+void RectangleUtils::sortByTop(RectanglePointers& rects)
+{
+    std::sort(rects.begin(), rects.end(), compareByTop);
 }
 
-//------------------------------------------------------------------------------
-void ofSortByRight(vector<ofRectangle*>& rects) {
-    sort(rects.begin(), rects.end(), sortByRight);
+
+void RectangleUtils::sortByRight(RectanglePointers& rects)
+{
+    std::sort(rects.begin(), rects.end(), compareByRight);
 }
 
-//------------------------------------------------------------------------------
-void ofSortByBottom(vector<ofRectangle*>& rects) {
-    sort(rects.begin(), rects.end(), sortByBottom);
+
+void RectangleUtils::sortByBottom(RectanglePointers& rects)
+{
+    std::sort(rects.begin(), rects.end(), compareByBottom);
 }
 
-//------------------------------------------------------------------------------
-void ofSortByHorzCenter(vector<ofRectangle*>& rects) {
-    sort(rects.begin(), rects.end(), sortByHorzCenter);
+
+void RectangleUtils::sortByHorzCenter(RectanglePointers& rects)
+{
+    std::sort(rects.begin(), rects.end(), compareByHorzCenter);
 }
 
-//------------------------------------------------------------------------------
-void ofSortByVertCenter(vector<ofRectangle*>& rects) {
-    sort(rects.begin(), rects.end(), sortByVertCenter);
+
+void RectangleUtils::sortByVertCenter(RectanglePointers& rects)
+{
+    std::sort(rects.begin(), rects.end(), compareByVertCenter);
 }
 
-//------------------------------------------------------------------------------
-void ofSortByWidth(vector<ofRectangle*>& rects) {
-    sort(rects.begin(), rects.end(), sortByWidth);
+
+void RectangleUtils::sortByWidth(RectanglePointers& rects)
+{
+    std::sort(rects.begin(), rects.end(), compareByWidth);
 }
 
-//------------------------------------------------------------------------------
-void ofSortByHeight(vector<ofRectangle*>& rects) {
-    sort(rects.begin(), rects.end(), sortByHeight);
+
+void RectangleUtils::sortByHeight(RectanglePointers& rects)
+{
+    std::sort(rects.begin(), rects.end(), compareByHeight);
 }
 
-//------------------------------------------------------------------------------
-void ofSortByAbsWidth(vector<ofRectangle*>& rects) {
-    sort(rects.begin(), rects.end(), sortByAbsWidth);
+
+void RectangleUtils::sortByAbsWidth(RectanglePointers& rects)
+{
+    std::sort(rects.begin(), rects.end(), compareByAbsWidth);
 }
 
-//------------------------------------------------------------------------------
-void ofSortByAbsHeight(vector<ofRectangle*>& rects) {
-    sort(rects.begin(), rects.end(), sortByAbsHeight);
+
+void RectangleUtils::sortByAbsHeight(RectanglePointers& rects)
+{
+    std::sort(rects.begin(), rects.end(), compareByAbsHeight);
 }
 
-//------------------------------------------------------------------------------
-void ofSortByArea(vector<ofRectangle*>& rects) {
-    sort(rects.begin(), rects.end(), sortByArea);
+
+void RectangleUtils::sortByArea(RectanglePointers& rects)
+{
+    std::sort(rects.begin(), rects.end(), compareByArea);
 }
 
-//------------------------------------------------------------------------------
-void ofSortByPerimeter(vector<ofRectangle*>& rects) {
-    sort(rects.begin(), rects.end(), sortByPerimeter);
+
+void RectangleUtils::sortByPerimeter(RectanglePointers& rects)
+{
+    std::sort(rects.begin(), rects.end(), compareByPerimeter);
 }
 
-//------------------------------------------------------------------------------
-ofRectangle ofGetBoundingBox(vector<ofRectangle*>& rects) {
+
+ofRectangle RectangleUtils::getBoundingBox(RectanglePointers& rects)
+{
     ofRectangle result;
-    
-    for(size_t i = 0; i < rects.size(); i++) {
-        if(i == 0) {
-            result.set(*rects[i]);
+
+    for(RectanglePointersIter iter = rects.begin(); iter != rects.end(); ++iter)
+    {
+        // on the first rect, set result equal
+        // so the NULL result isn't
+        // treated like a valid rectangle.
+        if(iter == rects.begin()) {
+            result.set(*(*iter));
         } else {
-            result.growToInclude(*rects[i]);
+            result.growToInclude(*(*iter));
         }
     }
     
@@ -177,61 +287,64 @@ ofRectangle ofGetBoundingBox(vector<ofRectangle*>& rects) {
 }
 
 
-//------------------------------------------------------------------------------
-void ofAlign(vector<ofRectangle*>& rects,
-             const ofAlignHorz& horzAnchor,
-             const ofAlignVert& vertAnchor) {
-    
-    ofAlignHorizontal(rects, horzAnchor);
-    ofAlignVertical(rects,vertAnchor);
+void RectangleUtils::align(RectanglePointers& rects,
+                           ofAlignHorz horzAnchor,
+                           ofAlignVert vertAnchor)
+{    
+    alignHorz(rects,horzAnchor);
+    alignVert(rects,vertAnchor);
 }
 
-//------------------------------------------------------------------------------
-void ofAlignHorizontal(vector<ofRectangle*>& rects,
-                       const ofAlignHorz& horzAnchor) {
 
+void RectangleUtils::alignHorz(RectanglePointers& rects, ofAlignHorz horzAnchor)
+{
     if(horzAnchor != OF_ALIGN_HORZ_IGNORE) {
         float xAlign = 0.0f;
-        ofSortByHorzAnchor(rects, horzAnchor);
-        for(size_t i = 0; i < rects.size(); i++) {
-            if(i == 0) {
-                xAlign = rects[i]->getHorzAnchor(horzAnchor);
+        sortByHorzAnchor(rects, horzAnchor);
+
+        for(RectanglePointersIter iter = rects.begin(); iter != rects.end(); ++iter)
+        {
+            if(iter == rects.begin()) {
+                xAlign = (*iter)->getHorzAnchor(horzAnchor);
             } else {
-                rects[i]->translateX(xAlign - rects[i]->getHorzAnchor(horzAnchor));
+                (*iter)->translateX(xAlign - (*iter)->getHorzAnchor(horzAnchor));
             }
         }
     } else {
         ofLogVerbose("ofAlignHorizontal") << "OF_ALIGN_HORZ_IGNORE align requested, ignoring.";
     }
-
 }
 
-//------------------------------------------------------------------------------
-void ofAlignVertical(vector<ofRectangle*>& rects,
-                     const ofAlignVert& vertAnchor) {
-    
+
+void RectangleUtils::alignVert(RectanglePointers& rects,
+                               ofAlignVert vertAnchor) {
+
+    cout << "here" << endl;
     if(vertAnchor != OF_ALIGN_VERT_IGNORE) {
         float yAlign = 0.0f;
-        ofSortByVertAnchor(rects, vertAnchor);
-        for(size_t i = 0; i < rects.size(); i++) {
-            if(i == 0) {
-                yAlign = rects[i]->getVertAnchor(vertAnchor);
+        sortByVertAnchor(rects, vertAnchor);
+        for(RectanglePointersIter iter = rects.begin(); iter != rects.end(); ++iter)
+        {
+            if(iter == rects.begin()) {
+                yAlign = (*iter)->getVertAnchor(vertAnchor);
             } else {
-                rects[i]->translateY(yAlign - rects[i]->getVertAnchor(vertAnchor));
+                (*iter)->translateY(yAlign - (*iter)->getVertAnchor(vertAnchor));
             }
         }
     } else {
         ofLogVerbose("ofAlignVertical") << "OF_ALIGN_VERT_IGNORE align requested, ignoring.";
     }
-    
 }
 
-void ofDistributeHorizontal(vector<ofRectangle*>& rects,
-                            const ofRectangle& boundingRect,
-                            const ofAlignHorz& horzAnchor) {
 
+void RectangleUtils::distributeHorz(RectanglePointers& rects,
+                                    const ofRectangle& boundingRect,
+                                    ofAlignHorz horzAnchor)
+{
+    
     if(rects.size() >= 3 && horzAnchor != OF_ALIGN_HORZ_IGNORE) {
-        ofSortByHorzAnchor(rects,horzAnchor);
+        sortByHorzAnchor(rects,horzAnchor);
+        
         float nPos = rects.size() - 1;
 
         // adjust to bounding bounding rect.  if bounding rect is based on the group, nothing will change
@@ -255,23 +368,21 @@ void ofDistributeHorizontal(vector<ofRectangle*>& rects,
     }
 }
 
-//------------------------------------------------------------------------------
-void ofDistributeHorizontal(vector<ofRectangle*>& rects,
-                            const ofAlignHorz& horzAnchor) {
-    
-    ofDistributeHorizontal(rects,
-                           ofGetBoundingBox(rects),
-                           horzAnchor);
 
+void RectangleUtils::distributeHorz(RectanglePointers& rects,
+                                    ofAlignHorz horzAnchor)
+{
+    distributeHorz(rects,getBoundingBox(rects),horzAnchor);
 }
 
-//------------------------------------------------------------------------------
-void ofDistributeVertical(vector<ofRectangle*>& rects,
-                          const ofRectangle& boundingRect,
-                          const ofAlignVert& vertAnchor) {
+
+void RectangleUtils::distributeVert(RectanglePointers& rects,
+                                    const ofRectangle& boundingRect,
+                                    ofAlignVert vertAnchor)
+{
 
     if(rects.size() >= 3 && vertAnchor != OF_ALIGN_VERT_IGNORE) {
-        ofSortByVertAnchor(rects,vertAnchor);
+        sortByVertAnchor(rects,vertAnchor);
         float nPos    = rects.size() - 1;
 
         // adjust to bounding bounding rect.  if bounding rect is based on the group, nothing will change
@@ -293,49 +404,39 @@ void ofDistributeVertical(vector<ofRectangle*>& rects,
     }
 }
 
-//------------------------------------------------------------------------------
-void ofDistributeVertical(vector<ofRectangle*>& rects,
-                          const ofAlignVert& vertAnchor) {
-   
-    ofDistributeVertical(rects,
-                         ofGetBoundingBox(rects),
-                         vertAnchor);
+
+void RectangleUtils::distributeVert(RectanglePointers& rects,
+                                    ofAlignVert vertAnchor)
+{
+    distributeVert(rects,getBoundingBox(rects),vertAnchor);
 }
 
-//------------------------------------------------------------------------------
-void ofDistribute(vector<ofRectangle*>& rects,
-                  const ofRectangle& boundingRect,
-                  const ofAlignHorz& horzAnchor,
-                  const ofAlignVert& vertAnchor) {
-    
-    ofDistributeHorizontal(rects,
-                           boundingRect,
-                           horzAnchor);
-    ofDistributeVertical(rects,
-                         boundingRect,
-                         vertAnchor);
-}
-//------------------------------------------------------------------------------
-void ofDistribute(vector<ofRectangle*>& rects,
-                  const ofAlignHorz& horzAnchor,
-                  const ofAlignVert& vertAnchor) {
-    
-    ofRectangle boundingRect = ofGetBoundingBox(rects);
 
-    ofDistribute(rects,
-                 boundingRect,
-                 horzAnchor,
-                 vertAnchor);
+void RectangleUtils::distribute(RectanglePointers& rects,
+                                const ofRectangle& boundingRect,
+                                ofAlignHorz horzAnchor,
+                                ofAlignVert vertAnchor)
+{    
+    distributeHorz(rects,boundingRect,horzAnchor);
+    distributeVert(rects,boundingRect,vertAnchor);
 }
 
-//------------------------------------------------------------------------------
-void ofCascade(vector<ofRectangle*>& rects,
-               const ofRectangle& boundingRect,
-               const ofPoint& offset) {
+
+void RectangleUtils::distribute(RectanglePointers& rects,
+                                ofAlignHorz horzAnchor,
+                                ofAlignVert vertAnchor)
+{
+    ofRectangle boundingRect = getBoundingBox(rects);
+    distribute(rects,boundingRect,horzAnchor,vertAnchor);
+}
+
+
+void RectangleUtils::cascade(RectanglePointers& rects,
+                             const ofRectangle& boundingRect,
+                             const ofVec2f& offset) {
     
     ofRectangle bb = boundingRect.getStandardized();
-    
-    ofPoint currentPosition = bb.getTopLeft();
+    ofVec2f currentPosition = bb.getTopLeft();
     
     int currentRow = 0;
     int currentColumn = 0;
@@ -360,24 +461,26 @@ void ofCascade(vector<ofRectangle*>& rects,
 }
 
 
-//------------------------------------------------------------------------------
-void ofStackHorzizontal(vector<ofRectangle*>& rects, float startX) {
+
+void RectangleUtils::stackHorz(RectanglePointers& rects, float offsetX)
+{
     for(size_t i = 0; i < rects.size(); i++) {
         rects[i]->standardize(); // make sure
         if(i == 0) {
-            rects[i]->setX(startX);
+            rects[i]->setX(offsetX);
         } else {
             rects[i]->setX(rects[i-1]->getRight());
         }
     }    
 }
 
-//------------------------------------------------------------------------------
-void ofStackVertical(vector<ofRectangle*>& rects, float startY) {
+
+void RectangleUtils::stackVert(RectanglePointers& rects, float offsetY)
+{
     for(size_t i = 0; i < rects.size(); i++) {
         rects[i]->standardize(); // make sure
         if(i == 0) {
-            rects[i]->setY(startY);
+            rects[i]->setY(offsetY);
         } else {
             rects[i]->setY(rects[i-1]->getBottom());
         }
@@ -385,22 +488,38 @@ void ofStackVertical(vector<ofRectangle*>& rects, float startY) {
 }
 
 
-bool ofPack(vector<ofRectangle*>& rects,
-            const ofRectangle& boundingRect) {
+//void RectangleUtils::pack(RectanglePointers& rects,
+//                     RectanglePointers& packed,
+//                     RectanglePointers& unpacked,
+//                     const ofRectangle& boundingRect)
+//{
+//    
+//}
 
-//    ofxMaxRectsBinPack packer(boundingRect.width,
-//                              boundingRect.height);
-//    
-//    vector<ofRectangle*> original = rects;
-//    rects.clear();
-//    
-//    packer.Insert(rects, rects, ofxMaxRectsBinPack::RectBestShortSideFit);
-//    
-    return true;
-}
+//void RectangleUtils::pack(RectanglePointers& rects,
+//                          RectanglePointers& packed,
+//                          RectanglePointers& unpacked)
+//{
+//    return pack(rects, packed, packed,getBoundingBox(rects));
+//}
+
+
+//bool ofPack(RectanglePointers& rects,
+//            const ofRectangle& boundingRect) {
+//
+////    ofxofRectanglePacker packer(boundingRect.width,
+////                              boundingRect.height);
+////    
+////    vector<ofRectangle*> original = rects;
+////    rects.clear();
+////    
+////    packer.Insert(rects, rects, ofxofRectanglePacker::RectBestShortSideFit);
+////    
+//    return true;
+//}
 
 //// like distribute, but doesn't rely on the max and min places to fit
-//void ofxMuiRectUtils::stack(vector<ofRectangle*>& rects, 
+//void ofxMuiRectUtils::stack(RectanglePointers& rects, 
 //                            ofxMuiAlign selfAlign,
 //                            ofxMuiAlign hGroupAlign, 
 //                            ofxMuiAlign vGroupAlign,
@@ -482,8 +601,8 @@ bool ofPack(vector<ofRectangle*>& rects,
 //}
 //
 //
-////------------------------------------------------------------------------------
-//void ofxMuiRectUtils::wrap(vector<ofRectangle*>& rects, 
+//
+//void ofxMuiRectUtils::wrap(RectanglePointers& rects, 
 //                           ofRectangle& boundingBox,
 //                           float horizontalSpace,
 //                           float verticalSpace,
@@ -533,7 +652,11 @@ bool ofPack(vector<ofRectangle*>& rects,
 //    
 //}
 ///*
-////------------------------------------------------------------------------------
-//void ofxMuiRectUtils::tile(vector<ofRectangle*>& rects, ofRectangle& boundingBox) {
+//
+//void ofxMuiRectUtils::tile(RectanglePointers& rects, ofRectangle& boundingBox) {
 //}
 // */
+
+
+} // namespace ofx
+

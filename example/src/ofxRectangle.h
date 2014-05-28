@@ -37,16 +37,15 @@ public:
     
     void update() {
         
-        
-        
     }
     
-    bool draw(int index) {
+    bool draw(int index, int selectionIndex) {
         
         int bmLineHeight = 12;
         
         stringstream ss;
         ss << " idx:[" + ofToString(index) + "]" << endl;
+        ss << "sidx:[" + ofToString(selectionIndex) + "]" << endl;
         ss << " x/y:[" + ofToString(getLeft()) + "," + ofToString(getTop()) + "]" << endl;
         ss << "peri:[" + ofToString(getPerimeter()) + "]" << endl;
         ss << "area:[" + ofToString(getArea()) + "]" << endl;

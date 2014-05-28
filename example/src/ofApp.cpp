@@ -1,7 +1,8 @@
 #include "ofApp.h"
 
-//--------------------------------------------------------------
-void ofApp::setup(){
+
+void ofApp::setup()
+{
     
     ofSetFrameRate(30);
     
@@ -12,17 +13,18 @@ void ofApp::setup(){
     draggingRectPtr = NULL;
 
     // create a random set of rectangles to play with
-    for(int i = 0; i < 10; i++) {
+    for(int i = 0; i < 40; ++i)
+    {
         // random coordinates
-        float w = floor(ofRandom(70,200));
-        float h = floor(ofRandom(70,200));
-        float x = floor(ofRandom(0, ofGetWidth()  - w));
-        float y = floor(ofRandom(0, ofGetHeight() - h));
+        float w = std::floor(ofRandom(5,100));
+        float h = std::floor(ofRandom(75,100));
+        float x = std::floor(ofRandom(0, ofGetWidth()  - w));
+        float y = std::floor(ofRandom(0, ofGetHeight() - h));
         
         ofxRectangle rect(ofRectangle(x,y,w,h),
-                          ofColor(floor(ofRandom(100,255)),
-                                  floor(ofRandom(100,255)),
-                                  floor(ofRandom(100,255))));
+                          ofColor(std::floor(ofRandom(100,255)),
+                                  std::floor(ofRandom(100,255)),
+                                  std::floor(ofRandom(100,255))));
                           
         // add the random rectangle
         rectangles.push_back(rect);
@@ -55,35 +57,42 @@ void ofApp::setup(){
 
 }
 
-//--------------------------------------------------------------
-void ofApp::update(){
 
+void ofApp::update()
+{
     ofPoint mouse(ofGetMouseX(),ofGetMouseY());
 
     
     bool foundIsOver = false;
     bool hasFirstSelection = false;
 
-    if(draggingRectPtr == NULL) {
+    if (draggingRectPtr == NULL) {
         selectedRects.clear();
     }
     
-    for(size_t i = 0; i < rectangles.size(); i++) {
+    for(size_t i = 0; i < rectangles.size(); ++i)
+    {
         
         // if we are selecting, re-evaluate this each time
-        if(isSelecting) {
+        if (isSelecting)
+        {
             rectangles[i].isSelected = rectangles[i].intersects(selectionRect);
         }
         
         // grow the slection box
-        if(rectangles[i].isSelected) {
+        if (rectangles[i].isSelected)
+        {
             
-            if(draggingRectPtr == NULL) {
+            if (draggingRectPtr == NULL)
+            {
             
-                if(!hasFirstSelection) {
+                if (!hasFirstSelection)
+                {
                     selectedRectsBoundingBox = rectangles[i];
                     hasFirstSelection = true;
-                } else {
+                }
+                else
+                {
                     selectedRectsBoundingBox.growToInclude(rectangles[i]);
                 }
                 
@@ -93,43 +102,55 @@ void ofApp::update(){
         }
         
         // check is over -- only set isOver if other things aren't happening
-        if(!foundIsOver &&
+        if (!foundIsOver &&
            /*selectedRects.empty() &&
            !rectangles[i].isSelected && */
            (draggingRectPtr == NULL ||
             draggingRectPtr == &rectangles[i] ||
             draggingRectPtr == &selectedRectsBoundingBox) &&
-           rectangles[i].inside(mouse)) {
+           rectangles[i].inside(mouse))
+           {
             rectangles[i].isOver = true;
             foundIsOver = true;
-        } else {
+        }
+        else
+        {
             rectangles[i].isOver = false;
         }
     }
 
     
-    if(isSelecting) {
+    if (isSelecting)
+    {
         selectionRect.set(dragStart,mouse);
     }
 
-    
 }
 
-//--------------------------------------------------------------
+
 void ofApp::draw(){
+
     ofBackground(0);
-    
+
+    ofPoint mouse(ofGetMouseX(),ofGetMouseY());
+
     ofFill();
     ofSetColor(255,showKeyboardCommands ? 255 : 127);
     ofDrawBitmapString(showKeyboardCommands ? keyboardCommands : "Press (Spacebar) for help.", 12,16);
     
     // draw all of our rectangles
-    for(size_t i = 0; i < rectangles.size(); i++) {
-        rectangles[i].draw(i);
+    for (size_t i = 0; i < rectangles.size(); ++i)
+    {
+        ofRectangle* rect = (ofRectangle*)&rectangles[i];
+
+        unsigned int selectionIndex = ofFind(selectedRects, rect);
+
+        rectangles[i].draw(i,selectionIndex == selectedRects.size() ? -1 : selectionIndex);
     }
-    
+
     // draw our bounding box rectangle
-    if(!isSelecting && !selectedRects.empty()) {
+    if (!isSelecting && !selectedRects.empty())
+    {
         ofFill();
         ofSetColor(255,20);
         ofRect(selectedRectsBoundingBox);
@@ -139,7 +160,8 @@ void ofApp::draw(){
     }
     
     // draw our selection raectangle
-    if(isSelecting) {
+    if (isSelecting)
+    {
         ofNoFill();
         ofSetColor(255,255,0,200);
         ofRect(selectionRect);
@@ -147,7 +169,8 @@ void ofApp::draw(){
 
     
     string hAlignString = "";
-    switch (hAlign) {
+    switch (hAlign)
+    {
         case OF_ALIGN_HORZ_LEFT:
             hAlignString = "OF_ALIGN_HORZ_LEFT";
             break;
@@ -188,106 +211,123 @@ void ofApp::draw(){
     ofSetColor(255);
     ofDrawBitmapString("Press (a) to toggle selection hAlign : " + hAlignString, 10, ofGetHeight() - 24);
     ofDrawBitmapString("Press (A) to toggle selection vAlign : " + vAlignString, 10, ofGetHeight() - 10);
-    
+
+
+    ofNoFill();
+    ofSetColor(255,255,0);
+
+    for(int i = 0; i < packedRects.size(); i++)
+    {
+        ofRect(packedRects[i]);
+    }
 }
 
-//--------------------------------------------------------------
-void ofApp::keyPressed(int key){
-//    if(key == OF_KEY_UP) {
+
+void ofApp::keyPressed(int key)
+{
+//    if (key == OF_KEY_UP) {
 //        for(size_t i = 0; i < selectedRects.size(); i++) {
 //            selectedRects[i]->vAlign = OF_ALIGN_VERT_TOP;
 //        }
-//    } else if(key == OF_KEY_DOWN) {
+//    } else if (key == OF_KEY_DOWN) {
 //        for(size_t i = 0; i < selectedRects.size(); i++) {
 //            selectedRects[i]->vAlign = OF_ALIGN_VERT_BOTTOM;
 //        }
-//    } else if(key == OF_KEY_LEFT) {
+//    } else if (key == OF_KEY_LEFT) {
 //        for(size_t i = 0; i < selectedRects.size(); i++) {
 //            selectedRects[i]->hAlign = OF_ALIGN_HORZ_LEFT;
 //        }
-//    } else if(key == OF_KEY_RIGHT) {
+//    } else if (key == OF_KEY_RIGHT) {
 //        for(size_t i = 0; i < selectedRects.size(); i++) {
 //            selectedRects[i]->hAlign = OF_ALIGN_HORZ_RIGHT;
 //        }
-//    } else if(key == 'c') {
+//    } else if (key == 'c') {
 //        for(size_t i = 0; i < selectedRects.size(); i++) {
 //            selectedRects[i]->hAlign = OF_ALIGN_HORZ_CENTER;
 //        }
-//    } else if(key == 'C') {
+//    } else if (key == 'C') {
 //        for(size_t i = 0; i < selectedRects.size(); i++) {
 //            selectedRects[i]->vAlign = OF_ALIGN_VERT_CENTER;
 //        }
-//    } else if(key == 'i') {
+//    } else if (key == 'i') {
 //        for(size_t i = 0; i < selectedRects.size(); i++) {
 //            selectedRects[i]->hAlign = OF_ALIGN_HORZ_IGNORE;
 //        }
-//    } else if(key == 'I') {
+//    } else if (key == 'I') {
 //        for(size_t i = 0; i < selectedRects.size(); i++) {
 //            selectedRects[i]->vAlign = OF_ALIGN_VERT_IGNORE;
 //        }
 //        
-    /*} else */ if(key == 'a') {
-        if(hAlign == OF_ALIGN_HORZ_LEFT) {
+    /*} else */ if (key == 'a') {
+        if (hAlign == OF_ALIGN_HORZ_LEFT) {
             hAlign = OF_ALIGN_HORZ_CENTER;
-        } else if(hAlign == OF_ALIGN_HORZ_CENTER) {
+        } else if (hAlign == OF_ALIGN_HORZ_CENTER) {
             hAlign = OF_ALIGN_HORZ_RIGHT;
-        } else if(hAlign == OF_ALIGN_HORZ_RIGHT) {
+        } else if (hAlign == OF_ALIGN_HORZ_RIGHT) {
             hAlign = OF_ALIGN_HORZ_IGNORE;
-        } else if(hAlign == OF_ALIGN_HORZ_IGNORE) {
+        } else if (hAlign == OF_ALIGN_HORZ_IGNORE) {
             hAlign = OF_ALIGN_HORZ_LEFT;
         }
-    } else if(key == 'A') {
-        if(vAlign == OF_ALIGN_VERT_TOP) {
+    } else if (key == 'A') {
+        if (vAlign == OF_ALIGN_VERT_TOP) {
             vAlign = OF_ALIGN_VERT_CENTER;
-        } else if(vAlign == OF_ALIGN_VERT_CENTER) {
+        } else if (vAlign == OF_ALIGN_VERT_CENTER) {
             vAlign = OF_ALIGN_VERT_BOTTOM;
-        } else if(vAlign == OF_ALIGN_VERT_BOTTOM) {
+        } else if (vAlign == OF_ALIGN_VERT_BOTTOM) {
             vAlign = OF_ALIGN_VERT_IGNORE;
-        } else if(vAlign == OF_ALIGN_VERT_IGNORE) {
+        } else if (vAlign == OF_ALIGN_VERT_IGNORE) {
             vAlign = OF_ALIGN_VERT_TOP;
         }
-    } else if(key == 'W') {
-        ofSortByAbsWidth(selectedRects);
-    } else if(key == 'A') {
-        ofSortByArea(selectedRects);
-    } else if(key == 'H') {
-        ofSortByAbsHeight(selectedRects);
-    } else if(key == 'c') {
-        ofCascade(selectedRects,ofRectangle(0,0,ofGetWidth(),ofGetHeight()),ofPoint(30,30));
-    } else if(key == 'v') {
-        ofAlignVertical(selectedRects,vAlign);
-    } else if(key == 'h') {
+    } else if (key == 'W') {
+        RectangleUtils::sortByAbsWidth(selectedRects);
+    } else if (key == 'A') {
+        RectangleUtils::sortByArea(selectedRects);
+    } else if (key == 'H') {
+        RectangleUtils::sortByAbsHeight(selectedRects);
+    } else if (key == 'c') {
+        RectangleUtils::cascade(selectedRects,ofRectangle(0,0,ofGetWidth(),ofGetHeight()),ofPoint(30,30));
+    } else if (key == 'v') {
+        RectangleUtils::alignVert(selectedRects,vAlign);
+    } else if (key == 'h') {
         // horizontal align selection
-        ofAlignHorizontal(selectedRects,hAlign);
-    } else if(key == 'x') {
+        RectangleUtils::alignHorz(selectedRects,hAlign);
+    } else if (key == 'x') {
         // distribute in x
-        ofDistributeHorizontal(selectedRects,hAlign);
-    } else if(key == 'y') {
-        ofDistributeVertical(selectedRects,vAlign);
-    } else if(key == 'p') {
-        ofPack(selectedRects,ofRectangle(0,0,ofGetWidth(),ofGetHeight()));
-    } else if(key == ' ') {
+        RectangleUtils::distributeHorz(selectedRects,hAlign);
+    } else if (key == 'y') {
+        RectangleUtils::distributeVert(selectedRects,vAlign);
+    } else if (key == 'p') {
+
+//        RectangleUtils::pack(selectedRects,ofRectangle(0,
+//                                                       0,
+//                                                       ofGetWidth(),
+//                                                       ofGetHeight()));
+//
+
+    } else if (key == ' ') {
         showKeyboardCommands = !showKeyboardCommands;
     }
-    
-    
-    
 }
 
-//--------------------------------------------------------------
-void ofApp::keyReleased(int key){}
 
-//--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y ){}
+void ofApp::keyReleased(int key)
+{
+}
 
-//--------------------------------------------------------------
-void ofApp::mouseDragged(int x, int y, int button){
-    if(draggingRectPtr != NULL) {
+
+void ofApp::mouseMoved(int x, int y )
+{
+}
+
+
+void ofApp::mouseDragged(int x, int y, int button)
+{
+    if (draggingRectPtr != NULL) {
         draggingRectPtr->setPosition(ofPoint(x,y) - draggingRectPtr->dragOffset);
         
-        if(draggingRectPtr == &selectedRectsBoundingBox) {
+        if (draggingRectPtr == &selectedRectsBoundingBox) {
             for(size_t i = 0; i < rectangles.size(); i++) {
-                if(rectangles[i].isSelected) {
+                if (rectangles[i].isSelected) {
                     rectangles[i].setPosition(ofPoint(x,y) - rectangles[i].dragOffset);
                 }
             }
@@ -296,23 +336,24 @@ void ofApp::mouseDragged(int x, int y, int button){
     }
 }
 
-//--------------------------------------------------------------
-void ofApp::mousePressed(int x, int y, int button){
+
+void ofApp::mousePressed(int x, int y, int button)
+{
     
     dragStart = ofPoint(x,y);  // set a new drag start point
     
     
-    if(!ofGetKeyPressed('A')) {
+    if (!ofGetKeyPressed('A')) {
     
         bool foundAClickTarget = false;
 
         // first check to see if we are in the bounding box
-        if(!selectedRects.empty() &&
+        if (!selectedRects.empty() &&
            selectedRectsBoundingBox.inside(dragStart)) {
             draggingRectPtr = &selectedRectsBoundingBox;
             selectedRectsBoundingBox.dragOffset = dragStart - selectedRectsBoundingBox.getPosition();
             for(size_t i = 0; i < rectangles.size(); i++) {
-                if(rectangles[i].isSelected) {
+                if (rectangles[i].isSelected) {
                     rectangles[i].dragOffset = dragStart - rectangles[i].getPosition();
                 }
             }
@@ -322,7 +363,7 @@ void ofApp::mousePressed(int x, int y, int button){
             // otherwise, go through all of the rects and see if we can drag one
             for(size_t i = 0; i < rectangles.size(); i++) {
                 rectangles[i].isSelected = false; // assume none
-                if(!foundAClickTarget && rectangles[i].isOver) {
+                if (!foundAClickTarget && rectangles[i].isOver) {
                     draggingRectPtr = &rectangles[i];
                     rectangles[i].isSelected = true;
                     rectangles[i].dragOffset = dragStart - rectangles[i].getPosition();
@@ -333,7 +374,7 @@ void ofApp::mousePressed(int x, int y, int button){
         
         isSelecting = !foundAClickTarget; // means our click did not land on an existing rect
     } else {
-        if(anchorRect != NULL) {
+        if (anchorRect != NULL) {
             delete anchorRect;
             anchorRect = NULL;
         }
@@ -343,17 +384,9 @@ void ofApp::mousePressed(int x, int y, int button){
         
 }
 
-//--------------------------------------------------------------
-void ofApp::mouseReleased(int x, int y, int button){
+
+void ofApp::mouseReleased(int x, int y, int button)
+{
     draggingRectPtr = NULL;
     isSelecting     = false;
 }
-
-//--------------------------------------------------------------
-void ofApp::windowResized(int w, int h){}
-
-//--------------------------------------------------------------
-void ofApp::gotMessage(ofMessage msg){}
-
-//--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){}

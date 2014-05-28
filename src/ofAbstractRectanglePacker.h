@@ -1,6 +1,6 @@
 // =============================================================================
 //
-// Copyright (c) 2009-2013 Christopher Baker <http://christopherbaker.net>
+// Copyright (c) 2009-2014 Christopher Baker <http://christopherbaker.net>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,51 +26,42 @@
 #pragma once
 
 
-#include "ofxRectangleUtils.h"
-#include "ofxRectangle.h"
-//#include "ofRotatedRectangle.h"
-//#include "ofRectanglePacker.h"
-
-using namespace ofx;
+#include "ofConstants.h"
 
 
-class ofApp : public ofBaseApp {
+/// \brief Defines an abstract rectangle packer.
+template<typename T>
+class ofAbstractRectanglePacker_
+{
 public:
-    void setup();
-    void update();
-    void draw();
+    ofAbstractRectanglePacker_();
 
-    void keyPressed  (int key);
-    void keyReleased(int key);
-    void mouseMoved(int x, int y );
-    void mouseDragged(int x, int y, int button);
-    void mousePressed(int x, int y, int button);
-    void mouseReleased(int x, int y, int button);
-		
-    vector<ofxRectangle>  rectangles;
-    vector<ofRectangle*>  selectedRects;
-    ofxRectangle          selectedRectsBoundingBox;
+    virtual ~ofAbstractRectanglePacker_();
 
-    ofxRectangle* draggingRectPtr;
-    
-    ofPoint dragStart;
+    virtual float getOccupancy() const = 0;
+    virtual T getWidth() const = 0;
+    virtual T getHeight() const = 0;
 
-    bool isSelecting;
-    ofRectangle selectionRect;
-    
-    ofAlignHorz hAlign;
-    ofAlignVert vAlign;
-    
-    ofRectangle* anchorRect;
-    
-    string keyboardCommands;
-    bool   showKeyboardCommands;
+protected:
+    virtual bool pack(T width,
+                      T height,
+                      T& packedX,
+                      T& packedY,
+                      T& packedWidth,
+                      T& packedHeight,
+                      ofOrientation& packedOrientation) = 0;
 
 
-//    ofRotatedRectangle rotatedRect;
-
-
-    vector<ofRectangle>  packedRects;
-
-//    ofRectanglePacker packer;
 };
+
+
+template<typename T>
+ofAbstractRectanglePacker_<T>::ofAbstractRectanglePacker_()
+{
+}
+
+
+template<typename T>
+ofAbstractRectanglePacker_<T>::~ofAbstractRectanglePacker_()
+{
+}
