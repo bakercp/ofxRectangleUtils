@@ -232,7 +232,7 @@ int ofBaseOnlineRectanglePacker_<T>::fit(std::size_t i,
 
     // Check to see if the left node position + the
     // proposed width is greater than the size.
-    if ((x + width) > (this->getWidth() - _padding))
+    if ((x + width) > (this->getWidth()) )
     {
         return -1;
     }
@@ -245,7 +245,7 @@ int ofBaseOnlineRectanglePacker_<T>::fit(std::size_t i,
             y = _nodes[i].y;
         }
 
-        if ((y + height) > (this->getHeight() - _padding))
+        if ((y + height) > (this->getHeight() ))
         {
             return -1;
         }
