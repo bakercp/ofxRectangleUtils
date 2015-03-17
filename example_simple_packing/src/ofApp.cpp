@@ -1,7 +1,7 @@
 #include "ofApp.h"
 
-
-int numRects = 80;
+int numRects = 500;
+int fboSize = 256;
 
 
 void ofApp::setup(){
@@ -11,15 +11,14 @@ void ofApp::setup(){
 }
 
 
-
 void ofApp::reCreateRects(){
 
 	rectangles.clear();
 
 	// create a random set of rectangles to play with
 	for(int i = 0; i < numRects; ++i){
-		float w = std::floor(ofRandom(25,80));
-		float h = std::floor(ofRandom(25,80));
+		float w = std::floor(ofRandom(20, 40));
+		float h = std::floor(ofRandom(20, 40));
 
 		ColoredRectangle r;
 		r.rect = ofRectangle(0,0,w,h);
@@ -34,7 +33,6 @@ void ofApp::packAll(float padding){
 
 	fbos.clear();
 	rectsPerFbo.clear();
-	int fboSize = 512;
 
 	//demo packing
 	ofRectangle bounds = ofRectangle(0,0, fboSize, fboSize);
@@ -83,7 +81,7 @@ void ofApp::packAll(float padding){
 			ofSetColor(rect.color, 64);
 			ofDrawRectangle(rect.rect);
 			ofSetColor(rect.color);
-			ofDrawBitmapString(ofToString(c), rect.rect.x + 5, rect.rect.y + 15);
+			ofDrawBitmapString(ofToString(c), rect.rect.x , rect.rect.y + 10);
 			c++;
 		}
 		fbo.end();
@@ -93,25 +91,36 @@ void ofApp::packAll(float padding){
 
 
 void ofApp::update(){
-	padding = ofClamp(ofGetMouseX() * 0.05, 0, 100);
+	padding = ofClamp(ofGetMouseX() * 0.02, 0, 100);
+	float t = ofGetElapsedTimef();
 	packAll(padding);
-	ofSetWindowTitle(ofToString(ofGetFrameRate(), 1));
+	t = ofGetElapsedTimef() - t;
+	ofSetWindowTitle(ofToString(ofGetFrameRate(),1) + " packing: " + ofToString(t,3) + " sec");
 }
 
 
 void ofApp::draw(){
 
     ofBackground(0);
-
 	ofSetColor(255);
+
+	int space = 2;
+	int y = space;
+	int x = 0;
 	for(int i = 0; i < fbos.size(); i++){
-		int space = 2;
-		fbos[i].draw((fbos[0].getWidth() + space) * i, 0);
+		fbos[i].draw(x, y);
+		x += (fboSize + space);
+		if ( x > ofGetWidth() - fboSize){
+			x = space;
+			y += fboSize + space;
+		}
 	}
 
 	ofDrawBitmapString("num FBOs: " + ofToString(fbos.size()) +
-					   "\nPadding: " + ofToString(padding, 1)
-					   , 20, 550);
+					   "\nPadding: " + ofToString(padding, 1) +
+					   "\nnumRects: " + ofToString(numRects, 1)
+					   ,20, ofGetHeight() - 50);
+
 }
 
 

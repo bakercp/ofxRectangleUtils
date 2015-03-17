@@ -54,5 +54,5 @@ public:
 	vector<ColoredRectangle>  rectangles;
 	vector< vector<ColoredRectangle> > rectsPerFbo;
 
-	float padding;
+	int padding;
 };
