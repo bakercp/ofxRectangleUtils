@@ -45,9 +45,10 @@
 class ofRectanglePacker: public ofBaseOnlineRectanglePacker_<float>
 {
 public:
-    ofRectanglePacker(const ofRectangle& bounds):
+    ofRectanglePacker(const ofRectangle& bounds, float padding):
         _bounds(bounds)
     {
+		_padding = padding;
     }
 
     virtual ~ofRectanglePacker()
@@ -58,12 +59,12 @@ public:
     {
         ofOrientation orient;
 
-        return ofBaseOnlineRectanglePacker_<float>::pack(rect.getWidth(),
-                                                         rect.getHeight(),
-                                                         rect.x,
-                                                         rect.y,
-                                                         rect.width,
-                                                         rect.height,
+		return ofBaseOnlineRectanglePacker_<float>::pack(rect.getWidth(), //const
+                                                         rect.getHeight(), //const
+                                                         rect.x,	//ret
+                                                         rect.y,	//ret
+                                                         rect.width, //ret
+                                                         rect.height, //ret
                                                          orient);
     }
 

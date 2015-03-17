@@ -491,7 +491,7 @@ void RectangleUtils::stackVert(RectanglePointers& rects, float offsetY)
 void RectangleUtils::pack(RectanglePointers& rects,
                           const ofRectangle& boundingRect)
 {
-    ofRectanglePacker packer(boundingRect);
+    ofRectanglePacker packer(boundingRect, 0);
 
     for(size_t i = 0; i < rects.size(); i++)
     {

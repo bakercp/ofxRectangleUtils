@@ -124,11 +124,11 @@ bool ofBaseOnlineRectanglePacker_<T>::pack(T width,
     // The fist node is added in the constructor.
     for (std::size_t i = 0; i < _nodes.size(); ++i)
     {
-        T y = fit(i, width, height);
+        T y = fit(i, width + _padding, height + _padding);
 
         if (y >= 0)
         {
-            T nextY = y + height;
+            T nextY = y + height + _padding;
 
             // Verify the rectangle fits at this Y.
             if ((nextY < best_height ) || ((nextY == best_height) && (_nodes[i].width < best_width)))
@@ -151,10 +151,11 @@ bool ofBaseOnlineRectanglePacker_<T>::pack(T width,
     // Unable to find a fit.
     if (!foundIndex)
     {
-        packedX = 0;
-        packedY = 0;
-        packedWidth = 0;
-        packedHeight = 0;
+		//lets not spoil the provided rect
+        //packedX = 0;
+        //packedY = 0;
+        //packedWidth = 0;
+        //packedHeight = 0;
         packedOrientation = OF_ORIENTATION_DEFAULT;
         return false;
     }
@@ -163,8 +164,8 @@ bool ofBaseOnlineRectanglePacker_<T>::pack(T width,
     Node _node;
 
     _node.x = packedX;
-    _node.y = packedY + height;
-    _node.width = width;
+    _node.y = packedY + height + _padding;
+    _node.width = width + _padding;
 
     // Add the node at the correct index.
     _nodes.insert(_nodes.begin() + best_index, _node);
