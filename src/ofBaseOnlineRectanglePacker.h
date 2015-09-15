@@ -238,7 +238,7 @@ int ofBaseOnlineRectanglePacker_<T>::fit(std::size_t i,
     }
 
     // Keep moving to find a place to find a vertical fit.
-    while (width_left > 0)
+    while (width_left > 0 && i < _nodes.size())
     {
         if (_nodes[i].y > y)
         {
