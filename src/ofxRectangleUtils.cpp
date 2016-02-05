@@ -276,9 +276,12 @@ ofRectangle RectangleUtils::getBoundingBox(RectanglePointers& rects)
         // on the first rect, set result equal
         // so the NULL result isn't
         // treated like a valid rectangle.
-        if(iter == rects.begin()) {
+        if(iter == rects.begin())
+        {
             result.set(*(*iter));
-        } else {
+        }
+        else
+        {
             result.growToInclude(*(*iter));
         }
     }
@@ -298,19 +301,26 @@ void RectangleUtils::align(RectanglePointers& rects,
 
 void RectangleUtils::alignHorz(RectanglePointers& rects, ofAlignHorz horzAnchor)
 {
-    if(horzAnchor != OF_ALIGN_HORZ_IGNORE) {
+    if (horzAnchor != OF_ALIGN_HORZ_IGNORE)
+    {
         float xAlign = 0.0f;
+
         sortByHorzAnchor(rects, horzAnchor);
 
-        for(RectanglePointersIter iter = rects.begin(); iter != rects.end(); ++iter)
+        for (RectanglePointersIter iter = rects.begin(); iter != rects.end(); ++iter)
         {
-            if(iter == rects.begin()) {
+            if (iter == rects.begin())
+            {
                 xAlign = (*iter)->getHorzAnchor(horzAnchor);
-            } else {
+            }
+            else
+            {
                 (*iter)->translateX(xAlign - (*iter)->getHorzAnchor(horzAnchor));
             }
         }
-    } else {
+    }
+    else
+    {
         ofLogVerbose("ofAlignHorizontal") << "OF_ALIGN_HORZ_IGNORE align requested, ignoring.";
     }
 }

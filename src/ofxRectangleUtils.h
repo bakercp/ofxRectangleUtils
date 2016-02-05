@@ -35,7 +35,107 @@
 namespace ofx {
 
 
-class RectangleUtils {
+template <typename DataType>
+class AbstractRectangle_
+{
+public:
+    virtual ~AbstractRectangle_()
+    {
+    }
+
+    virtual DataType getX() const = 0;
+    virtual void setX(const DataType& x) = 0;
+    virtual DataType getY() const = 0;
+    virtual void setY(const DataType& y) = 0;
+    virtual DataType getWidth() const = 0;
+    virtual void setWidth(const DataType& width) = 0;
+    virtual DataType getHeight() const = 0;
+    virtual void setHeight(const DataType& height) = 0;
+
+};
+
+
+template <typename RectangleType, typename DataType = float>
+class BaseRectangleAdapter_: public AbstractRectangle_<DataType>
+{
+public:
+    BaseRectangleAdapter_(RectangleType& rectangle):
+        _rectangle(rectangle)
+    {
+    }
+
+    virtual ~BaseRectangleAdapter_()
+    {
+    }
+
+protected:
+    RectangleType& _rectangle;
+
+};
+
+
+class ofRectangleAdapter: public BaseRectangleAdapter_<ofRectangle, float>
+{
+public:
+    ofRectangleAdapter(ofRectangle& rectangle):
+        BaseRectangleAdapter_<ofRectangle, float>(rectangle)
+    {
+    }
+
+    virtual ~ofRectangleAdapter()
+    {
+    }
+
+    virtual float getX() const override
+    {
+        return _rectangle.getX();
+    }
+
+    virtual void setX(const float& x) override
+    {
+        _rectangle.setX(x);
+    }
+
+    virtual float getY() const override
+    {
+        return _rectangle.getY();
+    }
+
+
+    virtual void setY(const float& y) override
+    {
+        _rectangle.setY(y);
+    }
+
+
+    virtual float getWidth() const override
+    {
+        return _rectangle.getWidth();
+    }
+
+    virtual void setWidth(const float& width) override
+    {
+        _rectangle.setWidth(width);
+    }
+
+
+    virtual float getHeight() const override
+    {
+        return _rectangle.getHeight();
+    }
+
+
+    virtual void setHeight(const float& height) override
+    {
+        _rectangle.setHeight(height);
+    }
+
+
+};
+
+
+class RectangleUtils
+{
 public:
     typedef std::vector<ofRectangle*> RectanglePointers;
     typedef std::vector<ofRectangle*>::iterator RectanglePointersIter;
@@ -138,11 +238,6 @@ public:
                      const ofRectangle& boundingRect);
 
     static void pack(RectanglePointers& rects);
-
-
-private:
-    RectangleUtils();
-    ~RectangleUtils();
 
 };
 

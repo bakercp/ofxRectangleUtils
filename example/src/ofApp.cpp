@@ -153,10 +153,10 @@ void ofApp::draw(){
     {
         ofFill();
         ofSetColor(255,20);
-        ofRect(selectedRectsBoundingBox);
+        ofDrawRectangle(selectedRectsBoundingBox);
         ofNoFill();
         ofSetColor(255,80);
-        ofRect(selectedRectsBoundingBox);
+        ofDrawRectangle(selectedRectsBoundingBox);
     }
     
     // draw our selection raectangle
@@ -164,7 +164,7 @@ void ofApp::draw(){
     {
         ofNoFill();
         ofSetColor(255,255,0,200);
-        ofRect(selectionRect);
+        ofDrawRectangle(selectionRect);
     }
 
     
@@ -218,7 +218,7 @@ void ofApp::draw(){
 
     for(int i = 0; i < packedRects.size(); i++)
     {
-        ofRect(packedRects[i]);
+        ofDrawRectangle(packedRects[i]);
     }
 }
 

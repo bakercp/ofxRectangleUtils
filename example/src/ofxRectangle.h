@@ -61,34 +61,34 @@ public:
         
         ofFill();
         ofSetColor(color,isSelected ? 110 : 80);
-        ofRect(*this);
+        ofDrawRectangle(*this);
         
         if(isSelected) {
             ofSetColor(color,255);
             ofNoFill();
             ofRectangle r;
             r.setFromCenter(rectCenter,5,5);
-            ofRect(r);
+            ofDrawRectangle(r);
             
             ofFill();
             int cornerW = 3;
             int cornerH = 3;
             ofRectangle corner;
             corner.setFromCenter(getTopLeft(),cornerW,cornerH);
-            ofRect(corner);
+            ofDrawRectangle(corner);
             corner.setFromCenter(getTopRight(),cornerW,cornerH);
-            ofRect(corner);
+            ofDrawRectangle(corner);
             corner.setFromCenter(getBottomRight(),cornerW,cornerH);
-            ofRect(corner);
+            ofDrawRectangle(corner);
             corner.setFromCenter(getBottomLeft(),cornerW,cornerH);
-            ofRect(corner);
+            ofDrawRectangle(corner);
 
             
         }
         
         ofNoFill();
         ofSetColor(color,isOver ? 255 : 100);
-        ofRect(*this);
+        ofDrawRectangle(*this);
         
         if(isOver && !isSelected) {
             int offset = 3;
@@ -102,8 +102,8 @@ public:
             ofPoint bottomLeft(xLeft,yBottom);
             ofPoint bottomRight(xRight,yBottom);
 
-            ofLine(topLeft,bottomRight);
-            ofLine(topRight,bottomLeft);
+            ofDrawLine(topLeft,bottomRight);
+            ofDrawLine(topRight,bottomLeft);
         }
         
         float hAnchor = -1;
@@ -145,16 +145,16 @@ public:
         
         if(hAnchor != -1) {
             ofSetColor(255,80);
-            ofLine(hAnchor, getMinY() - 13, hAnchor, getMinY() - 3);
-            ofLine(hAnchor, getMaxY() + 13, hAnchor, getMaxY() + 3);
+            ofDrawLine(hAnchor, getMinY() - 13, hAnchor, getMinY() - 3);
+            ofDrawLine(hAnchor, getMaxY() + 13, hAnchor, getMaxY() + 3);
         } else {
             
         }
         
         if(vAnchor != -1) {
             ofSetColor(255,80);
-            ofLine(getMinX() - 13, vAnchor, getMinX() - 3, vAnchor);
-            ofLine(getMaxX() + 13, vAnchor, getMaxX() + 3, vAnchor);
+            ofDrawLine(getMinX() - 13, vAnchor, getMinX() - 3, vAnchor);
+            ofDrawLine(getMaxX() + 13, vAnchor, getMaxX() + 3, vAnchor);
         } else {
         }
     }
