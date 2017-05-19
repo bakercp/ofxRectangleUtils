@@ -30,6 +30,8 @@
 #include "ofConstants.h"
 #include "ofRectangle.h"
 #include "ofRectanglePacker.h"
+#include "ofVec2f.h"
+#include "ofVec3f.h"
 
 
 namespace ofx {

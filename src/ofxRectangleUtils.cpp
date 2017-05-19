@@ -454,7 +454,7 @@ void RectangleUtils::cascade(RectanglePointers& rects,
             currentPosition.y = bb.y;
         }
         
-        r->setPosition(currentPosition);
+        r->setPosition(ofVec3f(currentPosition));
         currentPosition += offset;
     }
     
