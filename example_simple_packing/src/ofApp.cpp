@@ -1,79 +1,85 @@
+//
+// Copyright (c) 2009 Christopher Baker <https://christopherbaker.net>
+//
+// SPDX-License-Identifier:	MIT
+//
+
+
 #include "ofApp.h"
 
-int numRects = 500;
-int fboSize = 256;
 
-
-void ofApp::setup(){
-
+void ofApp::setup()
+{
 	ofEnableAlphaBlending();
 	reCreateRects();
 }
 
 
-void ofApp::reCreateRects(){
-
+void ofApp::reCreateRects()
+{
 	rectangles.clear();
 
-	// create a random set of rectangles to play with
-	for(int i = 0; i < numRects; ++i){
+	// Create a random set of rectangles to play with.
+    for (int i = 0; i < numRects; ++i)
+    {
 		float w = std::floor(ofRandom(20, 40));
 		float h = std::floor(ofRandom(20, 40));
 
-		ColoredRectangle r;
-		r.rect = ofRectangle(0,0,w,h);
-		r.color = ofColor(ofRandom(32,255), ofRandom(32,255), ofRandom(32,255));
+        rectangles.push_back(ColoredRectangle());
+		rectangles.back().rect = ofRectangle(0, 0, w, h);
+		rectangles.back().color = ofColor(ofRandom(32, 255),
+                                          ofRandom(32, 255),
+                                          ofRandom(32, 255));
 
-		rectangles.push_back(r);
 	}
 }
 
 
-void ofApp::packAll(float padding){
-
+void ofApp::packAll(float padding)
+{
 	fbos.clear();
 	rectsPerFbo.clear();
 
 	//demo packing
-	ofRectangle bounds = ofRectangle(0,0, fboSize, fboSize);
-	packer = new ofRectanglePacker(bounds, padding);
+	ofRectangle bounds(0, 0, fboSize, fboSize);
+	ofRectanglePacker packer(bounds, padding);
 	rectsPerFbo.resize(1); //add the 1st one
 
 	for (int i = 0 ; i < rectangles.size(); i++) {
 
-		bool didFit = packer->pack(rectangles[i].rect);
+		bool didFit = packer.pack(rectangles[i].rect);
 
-		if (!didFit){ //make a new FBO
+        // Make a new FBO if it didn't fit.
+		if (!didFit)
+        {
+            // Reset the packer.
+            packer.reset();
 
-			//ofLog() << "did pack until rect " << i - 1 << "; lets make a new fbo to fit the remaining";
+			// Start a new FBO to hold the next rects.
+			rectsPerFbo.push_back(std::vector<ColoredRectangle>());
 
-			//start a new fbo to hold the next rects
-			vector<ColoredRectangle> emptyV;
-			rectsPerFbo.push_back(emptyV);
-
-			//make new packer
-			delete packer;
-			packer = new ofRectanglePacker(bounds, padding);
-
-			i--; //dont forget to retry the one that didnt fit
-
-		}else{
-
-			rectsPerFbo[rectsPerFbo.size() - 1].push_back(rectangles[i]);
+            // Reset counter to make sure last rectangle is packed.
+			--i;
+		}
+        else
+        {
+			rectsPerFbo.back().push_back(rectangles[i]);
 		}
 	}
 
-	delete packer;
-	packer = NULL;
+    packer.reset();
 
 	int c = 0;
-	for(int i = 0; i < rectsPerFbo.size(); i++){
+
+    for (const auto& rects: rectsPerFbo)
+    {
 		ofFbo fbo;
 		fbo.allocate(fboSize, fboSize, GL_RGBA);
 		fbo.begin();
-		ofClear(22,255);
-		for (size_t j = 0; j < rectsPerFbo[i].size(); ++j){
-			ColoredRectangle & rect = rectsPerFbo[i][j];
+		ofClear(22, 255);
+
+        for (const auto& rect: rects)
+        {
 			ofNoFill();
 			ofSetColor(rect.color);
 			ofDrawRectangle(rect.rect);
@@ -82,39 +88,45 @@ void ofApp::packAll(float padding){
 			ofDrawRectangle(rect.rect);
 			ofSetColor(rect.color);
 			ofDrawBitmapString(ofToString(c), rect.rect.x , rect.rect.y + 10);
-			c++;
+			++c;
 		}
+
 		fbo.end();
 		fbos.push_back(fbo);
 	}
 }
 
 
-void ofApp::update(){
+void ofApp::update()
+{
 	padding = ofClamp(ofGetMouseX() * 0.02, 0, 100);
 	float t = ofGetElapsedTimef();
-	packAll(padding);
-	t = ofGetElapsedTimef() - t;
-	ofSetWindowTitle(ofToString(ofGetFrameRate(),1) + " packing: " + ofToString(t,3) + " sec");
+    packAll(padding);
+    t = ofGetElapsedTimef() - t;
+    ofSetWindowTitle(ofToString(ofGetFrameRate(),1) + " packing: " + ofToString(t,3) + " sec");
 }
 
 
-void ofApp::draw(){
-
+void ofApp::draw()
+{
     ofBackground(0);
 	ofSetColor(255);
 
 	int space = 2;
 	int y = space;
 	int x = 0;
-	for(int i = 0; i < fbos.size(); i++){
-		fbos[i].draw(x, y);
-		x += (fboSize + space);
-		if ( x > ofGetWidth() - fboSize){
-			x = space;
-			y += fboSize + space;
-		}
-	}
+
+    for (const auto& fbo: fbos)
+    {
+        fbo.draw(x, y);
+        x += (fboSize + space);
+
+        if ((x + fboSize) > ofGetWidth())
+        {
+            x = space;
+            y += fboSize + space;
+        }
+    }
 
 	ofDrawBitmapString("num FBOs: " + ofToString(fbos.size()) +
 					   "\nPadding: " + ofToString(padding, 1) +
@@ -124,7 +136,7 @@ void ofApp::draw(){
 }
 
 
-void ofApp::keyPressed(int key){
+void ofApp::keyPressed(int key)
+{
 	reCreateRects();
-};
-
+}

@@ -34,7 +34,15 @@ public:
 
     virtual ~ofBaseOnlineRectanglePacker_();
 
-    float getOccupancy() const;
+    float getOccupancy() const override;
+
+    void reset() override;
+
+    /// \returns the padding specified around each rectangle.
+    T getPadding() const;
+
+    /// \returns the area used.
+    T getAreaUsed() const;
 
 protected:
     virtual bool pack(T width,
@@ -43,7 +51,7 @@ protected:
                       T& packedY,
                       T& packedWidth,
                       T& packedHeight,
-                      ofOrientation& packedOrientation);
+                      ofOrientation& packedOrientation) override;
 
     int fit(std::size_t index, T width, T height);
 
@@ -59,7 +67,7 @@ protected:
     std::vector<Node> _nodes;
 
     T _padding;
-    T _used;
+    T _areaUsed;
 
 };
 
@@ -67,7 +75,7 @@ protected:
 template<typename T>
 ofBaseOnlineRectanglePacker_<T>::ofBaseOnlineRectanglePacker_(T padding):
     _padding(padding),
-    _used(0)
+    _areaUsed(0)
 {
 }
 
@@ -135,11 +143,11 @@ bool ofBaseOnlineRectanglePacker_<T>::pack(T width,
     // Unable to find a fit.
     if (!foundIndex)
     {
-		//lets not spoil the provided rect
-        //packedX = 0;
-        //packedY = 0;
-        //packedWidth = 0;
-        //packedHeight = 0;
+		// Lets not spoil the provided rect
+        // packedX = 0;
+        // packedY = 0;
+        // packedWidth = 0;
+        // packedHeight = 0;
         packedOrientation = OF_ORIENTATION_DEFAULT;
         return false;
     }
@@ -155,7 +163,7 @@ bool ofBaseOnlineRectanglePacker_<T>::pack(T width,
     _nodes.insert(_nodes.begin() + best_index, _node);
 
     // Adjust the current nodes, shrinking as needed.
-    for(std::size_t i = best_index + 1; i < _nodes.size(); ++i)
+    for (std::size_t i = best_index + 1; i < _nodes.size(); ++i)
     {
         // The last X edge
         T lastX = _nodes[i - 1].x + _nodes[i - 1].width;
@@ -190,7 +198,7 @@ bool ofBaseOnlineRectanglePacker_<T>::pack(T width,
     merge();
 
     // Here we use "this" because we must be explicit with templates.
-    this->_used += width * height;
+    this->_areaUsed += (width * height);
 
     // Return success.
     return true;
@@ -201,14 +209,36 @@ template<typename T>
 float ofBaseOnlineRectanglePacker_<T>::getOccupancy() const
 {
     // Here we use "this" because we must be explicit with templates.
-    return static_cast<float>(this->_used) / (this->getWidth() * this->getHeight());
+    return static_cast<float>(this->_areaUsed) / (this->getWidth() * this->getHeight());
+}
+
+
+template<typename T>
+void ofBaseOnlineRectanglePacker_<T>::reset()
+{
+    _nodes.clear();
+    _areaUsed = 0;
+}
+
+
+template<typename T>
+T ofBaseOnlineRectanglePacker_<T>::getPadding() const
+{
+    return this->_padding;
+}
+
+
+template<typename T>
+T ofBaseOnlineRectanglePacker_<T>::getAreaUsed() const
+{
+    return this->_areaUsed;
 }
 
 
 template<typename T>
 int ofBaseOnlineRectanglePacker_<T>::fit(std::size_t i,
-                                     T width,
-                                     T height)
+                                         T width,
+                                         T height)
 {
     T x = _nodes[i].x; // initial x
     T y = _nodes[i].y; // initial y
@@ -216,7 +246,7 @@ int ofBaseOnlineRectanglePacker_<T>::fit(std::size_t i,
 
     // Check to see if the left node position + the
     // proposed width is greater than the size.
-    if ((x + width) > (this->getWidth()) )
+    if ((x + width) > (this->getWidth()))
     {
         return -1;
     }
@@ -250,7 +280,7 @@ void ofBaseOnlineRectanglePacker_<T>::merge()
     // and looking for equal vertical boundaries.
     for (std::size_t i = 0; i < _nodes.size() - 1; ++i)
     {
-        if(_nodes[i].y == _nodes[i + 1].y)
+        if (_nodes[i].y == _nodes[i + 1].y)
         {
             // We found an equal node, so merge them.
             _nodes[i].width += _nodes[i + 1].width;

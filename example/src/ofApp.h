@@ -16,7 +16,8 @@
 using namespace ofx;
 
 
-class ofApp : public ofBaseApp {
+class ofApp: public ofBaseApp
+{
 public:
     void setup();
     void update();
@@ -50,9 +51,7 @@ public:
 
 
 //    ofRotatedRectangle rotatedRect;
-
-
-    vector<ofRectangle>  packedRects;
+    std::vector<ofRectangle>  packedRects;
 
 //    ofRectanglePacker packer;
 };

@@ -1,22 +1,34 @@
+//
+// Copyright (c) 2009 Christopher Baker <https://christopherbaker.net>
+//
+// SPDX-License-Identifier:	MIT
+//
+
+
 #pragma once
+
 
 #include "ofMain.h"
 
+
 class ofxRectangle : public ofRectangle {
 public:
-    ofxRectangle() {
+    ofxRectangle()
+    {
         ofRectangle rect;
         ofColor c;
         init(rect,c);
-    };
+    }
     
     ofxRectangle(const ofRectangle& rect,
-                 const ofColor& _color) {
+                 const ofColor& _color)
+    {
         init(rect,_color);
     }
     
     void init(const ofRectangle& rect,
-              const ofColor& _color) {
+              const ofColor& _color)
+    {
         x      = rect.x;
         y      = rect.y;
         width  = rect.width;
@@ -35,11 +47,12 @@ public:
 //        for(int i = 0; i)
 //    }
     
-    void update() {
-        
+    void update()
+    {
     }
     
-    bool draw(int index, int selectionIndex) {
+    bool draw(std::size_t index, std::size_t selectionIndex)
+    {
         
         int bmLineHeight = 12;
         
@@ -55,42 +68,40 @@ public:
         ofSetColor(255,127);
         ofDrawBitmapString(ss.str(), getLeft() + 2, getTop() + 12);
 
-
-        
         ofPoint rectCenter = getCenter();
         
         ofFill();
         ofSetColor(color,isSelected ? 110 : 80);
-        ofRect(*this);
+        ofDrawRectangle(*this);
         
-        if(isSelected) {
+        if (isSelected)
+        {
             ofSetColor(color,255);
             ofNoFill();
             ofRectangle r;
             r.setFromCenter(rectCenter,5,5);
-            ofRect(r);
+            ofDrawRectangle(r);
             
             ofFill();
             int cornerW = 3;
             int cornerH = 3;
             ofRectangle corner;
             corner.setFromCenter(getTopLeft(),cornerW,cornerH);
-            ofRect(corner);
+            ofDrawRectangle(corner);
             corner.setFromCenter(getTopRight(),cornerW,cornerH);
-            ofRect(corner);
+            ofDrawRectangle(corner);
             corner.setFromCenter(getBottomRight(),cornerW,cornerH);
-            ofRect(corner);
+            ofDrawRectangle(corner);
             corner.setFromCenter(getBottomLeft(),cornerW,cornerH);
-            ofRect(corner);
-
-            
+            ofDrawRectangle(corner);
         }
         
         ofNoFill();
         ofSetColor(color,isOver ? 255 : 100);
-        ofRect(*this);
+        ofDrawRectangle(*this);
         
-        if(isOver && !isSelected) {
+        if (isOver && !isSelected)
+        {
             int offset = 3;
             int xLeft   = rectCenter.x - offset;
             int xRight  = rectCenter.x + offset;
@@ -102,8 +113,8 @@ public:
             ofPoint bottomLeft(xLeft,yBottom);
             ofPoint bottomRight(xRight,yBottom);
 
-            ofLine(topLeft,bottomRight);
-            ofLine(topRight,bottomLeft);
+            ofDrawLine(topLeft,bottomRight);
+            ofDrawLine(topRight,bottomLeft);
         }
         
         float hAnchor = -1;
@@ -143,19 +154,25 @@ public:
                 break;
         }
         
-        if(hAnchor != -1) {
+        if (hAnchor != -1)
+        {
             ofSetColor(255,80);
-            ofLine(hAnchor, getMinY() - 13, hAnchor, getMinY() - 3);
-            ofLine(hAnchor, getMaxY() + 13, hAnchor, getMaxY() + 3);
-        } else {
+            ofDrawLine(hAnchor, getMinY() - 13, hAnchor, getMinY() - 3);
+            ofDrawLine(hAnchor, getMaxY() + 13, hAnchor, getMaxY() + 3);
+        }
+        else
+        {
             
         }
         
-        if(vAnchor != -1) {
+        if (vAnchor != -1)
+        {
             ofSetColor(255,80);
-            ofLine(getMinX() - 13, vAnchor, getMinX() - 3, vAnchor);
-            ofLine(getMaxX() + 13, vAnchor, getMaxX() + 3, vAnchor);
-        } else {
+            ofDrawLine(getMinX() - 13, vAnchor, getMinX() - 3, vAnchor);
+            ofDrawLine(getMaxX() + 13, vAnchor, getMaxX() + 3, vAnchor);
+        }
+        else
+        {
         }
     }
     

@@ -7,34 +7,38 @@
 
 #pragma once
 
+
 #include "ofMain.h"
 #include "ofxRectangleUtils.h"
 
-class ColoredRectangle{
+
+class ColoredRectangle
+{
 public:
 	ofRectangle rect;
 	ofColor color;
 };
 
 
-class ofApp : public ofBaseApp {
+class ofApp: public ofBaseApp
+{
 public:
-    void setup();
-    void update();
-    void draw();
+    void setup() override;
+    void update() override;
+    void draw() override;
 
-	void keyPressed(int key);
-	void keyReleased(int key){};
+	void keyPressed(int key) override;
 
 	void reCreateRects();
 	void packAll(float padding);
 
+    std::vector<ofFbo> fbos;
+	std::vector<ColoredRectangle> rectangles;
+	std::vector<std::vector<ColoredRectangle>> rectsPerFbo;
 
-	ofRectanglePacker *packer;
+	int padding = 0;
 
-	vector<ofFbo> fbos;
-	vector<ColoredRectangle>  rectangles;
-	vector< vector<ColoredRectangle> > rectsPerFbo;
+    int numRects = 500;
+    int fboSize = 256;
 
-	int padding;
 };

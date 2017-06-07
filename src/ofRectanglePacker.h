@@ -52,16 +52,15 @@ public:
                                                          orient);
     }
 
-    float getWidth() const
+    float getWidth() const override
     {
         return _bounds.getWidth();
     }
 
-    float getHeight() const
+    float getHeight() const override
     {
         return _bounds.getHeight();
     }
-
 
 protected:
     ofRectangle _bounds;

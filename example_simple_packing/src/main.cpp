@@ -1,14 +1,15 @@
-#include "ofMain.h"
+//
+// Copyright (c) 2009 Christopher Baker <https://christopherbaker.net>
+//
+// SPDX-License-Identifier:	MIT
+//
+
+
 #include "ofApp.h"
 
-//========================================================================
-int main( ){
 
-	ofSetupOpenGL(1600, 1024, OF_WINDOW);			// <-------- setup the GL context
-
-	// this kicks off the running of my app
-	// can be OF_WINDOW or OF_FULLSCREEN
-	// pass in width and height too:
-	ofRunApp( new ofApp());
-
+int main()
+{
+    ofSetupOpenGL(1100, 768, OF_WINDOW);
+    return ofRunApp(std::make_shared<ofApp>());
 }
