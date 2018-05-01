@@ -11,13 +11,14 @@
 #include "ofMain.h"
 
 
-class ofxRectangle : public ofRectangle {
+class ofxRectangle: public ofRectangle
+{
 public:
     ofxRectangle()
     {
         ofRectangle rect;
         ofColor c;
-        init(rect,c);
+        init(rect, c);
     }
     
     ofxRectangle(const ofRectangle& rect,
@@ -187,6 +188,6 @@ public:
     ofAlignHorz hAlign;
     ofAlignVert vAlign;
     
-    ofPoint dragOffset;
+    glm::vec2 dragOffset;
     
 };

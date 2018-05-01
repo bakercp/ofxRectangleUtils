@@ -19,24 +19,22 @@ using namespace ofx;
 class ofApp: public ofBaseApp
 {
 public:
-    void setup();
-    void update();
-    void draw();
+    void setup() override;
+    void update() override;
+    void draw() override;
 
-    void keyPressed  (int key);
-    void keyReleased(int key);
-    void mouseMoved(int x, int y );
-    void mouseDragged(int x, int y, int button);
-    void mousePressed(int x, int y, int button);
-    void mouseReleased(int x, int y, int button);
+    void keyPressed(int key) override;
+    void mouseDragged(int x, int y, int button) override;
+    void mousePressed(int x, int y, int button) override;
+    void mouseReleased(int x, int y, int button) override;
 		
-    vector<ofxRectangle>  rectangles;
-    vector<ofRectangle*>  selectedRects;
-    ofxRectangle          selectedRectsBoundingBox;
+    std::vector<ofxRectangle>  rectangles;
+    std::vector<ofRectangle*>  selectedRects;
+    ofxRectangle selectedRectsBoundingBox;
 
     ofxRectangle* draggingRectPtr;
     
-    ofPoint dragStart;
+    glm::vec2 dragStart;
 
     bool isSelecting;
     ofRectangle selectionRect;
@@ -47,7 +45,7 @@ public:
     ofRectangle* anchorRect;
     
     string keyboardCommands;
-    bool   showKeyboardCommands;
+    bool showKeyboardCommands;
 
 
 //    ofRotatedRectangle rotatedRect;

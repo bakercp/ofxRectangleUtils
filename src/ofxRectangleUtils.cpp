@@ -6,6 +6,8 @@
 
 
 #include "ofxRectangleUtils.h"
+#include "ofLog.h"
+#include <cmath>
 
 
 namespace ofx {
@@ -98,13 +100,13 @@ bool RectangleUtils::compareByHeight(ofRectangle* r0, ofRectangle* r1)
 
 bool RectangleUtils::compareByAbsWidth(ofRectangle* r0, ofRectangle* r1)
 {
-    return std::abs(r0->getWidth()) < std::abs(r1->getWidth());
+    return std::fabs(r0->getWidth()) < std::fabs(r1->getWidth());
 }
 
 
 bool RectangleUtils::compareByAbsHeight(ofRectangle* r0, ofRectangle* r1)
 {
-    return std::abs(r0->getHeight()) < std::abs(r1->getHeight());
+    return std::fabs(r0->getHeight()) < std::fabs(r1->getHeight());
 }
 
 
@@ -299,10 +301,12 @@ void RectangleUtils::alignHorz(RectanglePointers& rects, ofAlignHorz horzAnchor)
 
 
 void RectangleUtils::alignVert(RectanglePointers& rects,
-                               ofAlignVert vertAnchor) {
+                               ofAlignVert vertAnchor)
+{
 
-    cout << "here" << endl;
-    if(vertAnchor != OF_ALIGN_VERT_IGNORE) {
+    std::cout << "here" << std::endl;
+    if(vertAnchor != OF_ALIGN_VERT_IGNORE)
+    {
         float yAlign = 0.0f;
         sortByVertAnchor(rects, vertAnchor);
         for(RectanglePointersIter iter = rects.begin(); iter != rects.end(); ++iter)
@@ -341,8 +345,10 @@ void RectangleUtils::distributeHorz(RectanglePointers& rects,
             rects[i]->translateX((leftX - rects[i]->getHorzAnchor(horzAnchor)) + i * span);
         }
         
-    } else {
-        if(horzAnchor == OF_ALIGN_HORZ_IGNORE) {
+    }
+    else
+    {
+        if (horzAnchor == OF_ALIGN_HORZ_IGNORE) {
             ofLogVerbose("ofDistributeHorizontal") << "OF_ALIGN_HORZ_IGNORE distribute requested, ignoring.";
         } else {
             ofLogWarning("ofDistributeHorizontal") << "Not enough rectangles to distribute.";
@@ -415,20 +421,21 @@ void RectangleUtils::distribute(RectanglePointers& rects,
 
 void RectangleUtils::cascade(RectanglePointers& rects,
                              const ofRectangle& boundingRect,
-                             const ofVec2f& offset) {
+                             const glm::vec2& offset) {
     
     ofRectangle bb = boundingRect.getStandardized();
-    ofVec2f currentPosition = bb.getTopLeft();
+    glm::vec3 currentPosition = bb.getTopLeft();
     
     int currentRow = 0;
     int currentColumn = 0;
     
-    for(size_t i = 0; i < rects.size(); i++) {
+    for (size_t i = 0; i < rects.size(); i++)
+    {
         ofRectangle* r = rects[i]; // get the pointer
         
         r->standardize();
         
-        if((currentPosition.y + r->height) > (bb.getBottom())) {
+        if ((currentPosition.y + r->height) > (bb.getBottom())) {
             // new row, new column
             currentColumn++;
             currentPosition.x = currentColumn * offset.x + bb.x;
@@ -436,8 +443,8 @@ void RectangleUtils::cascade(RectanglePointers& rects,
             currentPosition.y = bb.y;
         }
         
-        r->setPosition(ofVec3f(currentPosition));
-        currentPosition += offset;
+        r->setPosition(glm::vec3(currentPosition));
+        currentPosition += glm::vec3(offset.x, offset.y, 0);
     }
     
 }
@@ -446,7 +453,7 @@ void RectangleUtils::cascade(RectanglePointers& rects,
 
 void RectangleUtils::stackHorz(RectanglePointers& rects, float offsetX)
 {
-    for(size_t i = 0; i < rects.size(); i++) {
+    for (size_t i = 0; i < rects.size(); i++) {
         rects[i]->standardize(); // make sure
         if(i == 0) {
             rects[i]->setX(offsetX);
@@ -507,7 +514,7 @@ void RectangleUtils::pack(RectanglePointers& rects)
 //                            ofxMuiAlign hGroupAlign, 
 //                            ofxMuiAlign vGroupAlign,
 //                            float spacing,
-//                            ofPoint anchor,
+//                            glm::vec2 anchor,
 //                            bool reverseStackOrder) {
 //
 //    ofRectangle bb = ofRectangle(anchor,0,0);

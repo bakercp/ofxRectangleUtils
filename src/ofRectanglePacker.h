@@ -24,6 +24,7 @@
 
 
 #include "ofBaseOnlineRectanglePacker.h"
+#include "ofWindowSettings.h"
 
 
 class ofRectanglePacker: public ofBaseOnlineRectanglePacker_<float>
@@ -43,12 +44,12 @@ public:
     {
         ofOrientation orient;
 
-		return ofBaseOnlineRectanglePacker_<float>::pack(rect.getWidth(), //const
-                                                         rect.getHeight(), //const
-                                                         rect.x,	//ret
-                                                         rect.y,	//ret
-                                                         rect.width, //ret
-                                                         rect.height, //ret
+		return ofBaseOnlineRectanglePacker_<float>::pack(rect.getWidth(),
+                                                         rect.getHeight(),
+                                                         rect.x,
+                                                         rect.y,
+                                                         rect.width,
+                                                         rect.height,
                                                          orient);
     }
 

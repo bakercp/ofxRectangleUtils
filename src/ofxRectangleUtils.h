@@ -12,8 +12,6 @@
 #include "ofConstants.h"
 #include "ofRectangle.h"
 #include "ofRectanglePacker.h"
-#include "ofVec2f.h"
-#include "ofVec3f.h"
 
 
 namespace ofx {
@@ -115,7 +113,7 @@ public:
     // cascading
     static void cascade(RectanglePointers& rects,
                         const ofRectangle& boundingRect,
-                        const ofVec2f& offset = ofVec2f(0,0));
+                        const glm::vec2& offset = glm::vec2(0,0));
     
     // packing
     static void pack(RectanglePointers& rects,
@@ -139,7 +137,7 @@ private:
 ////                      ofxMuiAlign hGroupAlign = ALIGN_LEFT, 
 ////                      ofxMuiAlign vGroupAlign = ALIGN_TOP,
 ////                      float spacing = 0,
-////                      ofPoint anchor = ofPoint(0,0),
+////                      glm::vec2 anchor(0,0),
 ////                      bool reverseStackOrder = false);
 ////    
 ////    
@@ -158,5 +156,5 @@ private:
 //    
 ////    static void cascade(vector<ofRectangle*>& rects, 
 ////                        ofRectangle& boundingBox, 
-////                        ofPoint offset = ofPoint(25,50));
+////                        glm::vec2 offset = glm::vec2(25,50));
 ////    

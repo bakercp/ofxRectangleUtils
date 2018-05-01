@@ -9,6 +9,7 @@
 
 
 #include "ofConstants.h"
+#include "ofWindowSettings.h"
 
 
 /// \brief Defines an abstract rectangle packer.
