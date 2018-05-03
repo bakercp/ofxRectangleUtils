@@ -52,7 +52,6 @@ protected:
                       T& packedHeight,
                       ofOrientation& packedOrientation) = 0;
 
-
 };
 
 

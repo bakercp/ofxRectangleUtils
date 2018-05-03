@@ -23,6 +23,7 @@
 #pragma once
 
 
+#include <limits>
 #include "ofAbstractRectanglePacker.h"
 
 

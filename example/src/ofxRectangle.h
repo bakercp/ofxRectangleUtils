@@ -52,7 +52,7 @@ public:
     {
     }
     
-    bool draw(std::size_t index, std::size_t selectionIndex)
+    void draw(std::size_t index, std::size_t selectionIndex)
     {
         
         int bmLineHeight = 12;
@@ -134,8 +134,6 @@ public:
             case OF_ALIGN_HORZ_CENTER:
                 hAnchor = rectCenter.x;
                 break;
-            default:
-                break;
         }
         
         switch (vAlign) {
@@ -150,8 +148,6 @@ public:
                 break;
             case OF_ALIGN_VERT_CENTER:
                 vAnchor = rectCenter.y;
-                break;
-            default:
                 break;
         }
         

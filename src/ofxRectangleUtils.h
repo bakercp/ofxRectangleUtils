@@ -68,50 +68,45 @@ public:
     {
     }
 
-    virtual float getX() const override
+    float getX() const override
     {
         return _rectangle.getX();
     }
 
-    virtual void setX(const float& x) override
+    void setX(const float& x) override
     {
         _rectangle.setX(x);
     }
 
-    virtual float getY() const override
+    float getY() const override
     {
         return _rectangle.getY();
     }
 
-
-    virtual void setY(const float& y) override
+    void setY(const float& y) override
     {
         _rectangle.setY(y);
     }
 
-
-    virtual float getWidth() const override
+    float getWidth() const override
     {
         return _rectangle.getWidth();
     }
 
-    virtual void setWidth(const float& width) override
+    void setWidth(const float& width) override
     {
         _rectangle.setWidth(width);
     }
 
-
-    virtual float getHeight() const override
+    float getHeight() const override
     {
         return _rectangle.getHeight();
     }
 
-
-    virtual void setHeight(const float& height) override
+    void setHeight(const float& height) override
     {
         _rectangle.setHeight(height);
     }
-
 
 };
 

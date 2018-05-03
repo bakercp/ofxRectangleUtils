@@ -138,8 +138,6 @@ void RectangleUtils::sortByHorzAnchor(RectanglePointers& rects,
         case OF_ALIGN_HORZ_CENTER:
             sortByHorzCenter(rects);
             break;
-        default:
-            ofLogError("RectangleUtils::sortByHorzAnchor") << "Unknown ofAlignHorz value: " << horzAnchor;
     }
 }
 
@@ -160,8 +158,6 @@ void RectangleUtils::sortByVertAnchor(RectanglePointers& rects,
         case OF_ALIGN_VERT_CENTER:
             sortByVertCenter(rects);
             break;
-        default:
-            ofLogError("ofSortByVertAnchor") << "Unknown ofAlignVert value.";
     }
 }
 
@@ -341,20 +337,23 @@ void RectangleUtils::distributeHorz(RectanglePointers& rects,
     if(rects.size() >= 3 && horzAnchor != OF_ALIGN_HORZ_IGNORE) {
         sortByHorzAnchor(rects,horzAnchor);
         
-        float nPos = rects.size() - 1;
+        if (!rects.empty())
+        {
+                std::size_t nPos = rects.size() - 1;
 
-        // adjust to bounding bounding rect.  if bounding rect is based on the group, nothing will change
-        rects[0]->translateX(boundingRect.getLeft() - rects[0]->getLeft());
-        rects[nPos]->translateX(boundingRect.getRight() - rects[nPos]->getRight());
-        
-        float leftX   = rects[0]->getHorzAnchor(horzAnchor);
-        float rightX  = rects[nPos]->getHorzAnchor(horzAnchor);
-        
-        float span = ( rightX - leftX ) / ( nPos );
-        for(size_t i = 1; i < nPos; i++) {
-            rects[i]->translateX((leftX - rects[i]->getHorzAnchor(horzAnchor)) + i * span);
+                // adjust to bounding bounding rect.  if bounding rect is based on the group, nothing will change
+                rects[0]->translateX(boundingRect.getLeft() - rects[0]->getLeft());
+                rects[nPos]->translateX(boundingRect.getRight() - rects[nPos]->getRight());
+
+                float leftX   = rects[0]->getHorzAnchor(horzAnchor);
+                float rightX  = rects[nPos]->getHorzAnchor(horzAnchor);
+
+                float span = ( rightX - leftX ) / ( nPos );
+                for (size_t i = 1; i < nPos; i++)
+                {
+                    rects[i]->translateX((leftX - rects[i]->getHorzAnchor(horzAnchor)) + i * span);
+                }
         }
-        
     }
     else
     {
@@ -381,17 +380,21 @@ void RectangleUtils::distributeVert(RectanglePointers& rects,
 
     if(rects.size() >= 3 && vertAnchor != OF_ALIGN_VERT_IGNORE) {
         sortByVertAnchor(rects,vertAnchor);
-        float nPos    = rects.size() - 1;
 
-        // adjust to bounding bounding rect.  if bounding rect is based on the group, nothing will change
-        rects[0]->translateY(boundingRect.getTop() - rects[0]->getTop());
-        rects[nPos]->translateY(boundingRect.getBottom() - rects[nPos]->getBottom());
-        
-        float topY    = rects[0]->getVertAnchor(vertAnchor);
-        float bottomY = rects[nPos]->getVertAnchor(vertAnchor);
-        float span = ( bottomY - topY ) / ( nPos );
-        for(size_t i = 1; i < nPos; i++) {
-            rects[i]->translateY((topY - rects[i]->getVertAnchor(vertAnchor)) + i * span);
+        if (!rects.empty())
+        {
+            std::size_t nPos = rects.size() - 1;
+
+            // adjust to bounding bounding rect.  if bounding rect is based on the group, nothing will change
+            rects[0]->translateY(boundingRect.getTop() - rects[0]->getTop());
+            rects[nPos]->translateY(boundingRect.getBottom() - rects[nPos]->getBottom());
+
+            float topY    = rects[0]->getVertAnchor(vertAnchor);
+            float bottomY = rects[nPos]->getVertAnchor(vertAnchor);
+            float span = ( bottomY - topY ) / ( nPos );
+            for (std::size_t i = 1; i < nPos; i++) {
+                rects[i]->translateY((topY - rects[i]->getVertAnchor(vertAnchor)) + i * span);
+            }
         }
     } else {
         if(vertAnchor == OF_ALIGN_VERT_IGNORE) {
