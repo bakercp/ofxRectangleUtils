@@ -1,3 +1,10 @@
+//
+// Copyright (c) 2009 Christopher Baker <https://christopherbaker.net>
+//
+// SPDX-License-Identifier:	MIT
+//
+
+
 #include "ofApp.h"
 
 
@@ -70,9 +77,8 @@ void ofApp::update()
         selectedRects.clear();
     }
     
-    for(size_t i = 0; i < rectangles.size(); ++i)
+    for (size_t i = 0; i < rectangles.size(); ++i)
     {
-        
         // if we are selecting, re-evaluate this each time
         if (isSelecting)
         {
@@ -122,7 +128,7 @@ void ofApp::update()
     
     if (isSelecting)
     {
-        selectionRect.set(dragStart,mouse);
+        selectionRect.set(glm::vec3(dragStart.x, dragStart.y, 0), mouse);
     }
 
 }
@@ -285,7 +291,7 @@ void ofApp::keyPressed(int key)
     } else if (key == 'H') {
         RectangleUtils::sortByAbsHeight(selectedRects);
     } else if (key == 'c') {
-        RectangleUtils::cascade(selectedRects,ofRectangle(0,0,ofGetWidth(),ofGetHeight()),ofPoint(30,30));
+        RectangleUtils::cascade(selectedRects,ofRectangle(0,0,ofGetWidth(),ofGetHeight()),glm::vec2(30,30));
     } else if (key == 'v') {
         RectangleUtils::alignVert(selectedRects,vAlign);
     } else if (key == 'h') {
@@ -304,19 +310,11 @@ void ofApp::keyPressed(int key)
                                                        ofGetHeight()));
 
 
-    } else if (key == ' ') {
+    }
+    else if (key == ' ')
+    {
         showKeyboardCommands = !showKeyboardCommands;
     }
-}
-
-
-void ofApp::keyReleased(int key)
-{
-}
-
-
-void ofApp::mouseMoved(int x, int y )
-{
 }
 
 
@@ -340,7 +338,7 @@ void ofApp::mouseDragged(int x, int y, int button)
 void ofApp::mousePressed(int x, int y, int button)
 {
     
-    dragStart = ofPoint(x,y);  // set a new drag start point
+    dragStart = glm::vec2(x, y);  // set a new drag start point
     
     
     if (!ofGetKeyPressed('A')) {
@@ -351,17 +349,17 @@ void ofApp::mousePressed(int x, int y, int button)
         if (!selectedRects.empty() &&
            selectedRectsBoundingBox.inside(dragStart)) {
             draggingRectPtr = &selectedRectsBoundingBox;
-            selectedRectsBoundingBox.dragOffset = dragStart - selectedRectsBoundingBox.getPosition();
-            for(size_t i = 0; i < rectangles.size(); i++) {
+            selectedRectsBoundingBox.dragOffset = dragStart - selectedRectsBoundingBox.getPosition().xy;
+            for (std::size_t i = 0; i < rectangles.size(); i++) {
                 if (rectangles[i].isSelected) {
-                    rectangles[i].dragOffset = dragStart - rectangles[i].getPosition();
+                    rectangles[i].dragOffset = dragStart - rectangles[i].getPosition().xy;
                 }
             }
             foundAClickTarget = true;
         } else {
             selectedRects.clear();
             // otherwise, go through all of the rects and see if we can drag one
-            for(size_t i = 0; i < rectangles.size(); i++) {
+            for (size_t i = 0; i < rectangles.size(); i++) {
                 rectangles[i].isSelected = false; // assume none
                 if (!foundAClickTarget && rectangles[i].isOver) {
                     draggingRectPtr = &rectangles[i];
@@ -374,9 +372,9 @@ void ofApp::mousePressed(int x, int y, int button)
         
         isSelecting = !foundAClickTarget; // means our click did not land on an existing rect
     } else {
-        if (anchorRect != NULL) {
+        if (anchorRect != nullptr) {
             delete anchorRect;
-            anchorRect = NULL;
+            anchorRect = nullptr;
         }
         
         anchorRect = new ofRectangle(dragStart,0,0);
@@ -387,6 +385,6 @@ void ofApp::mousePressed(int x, int y, int button)
 
 void ofApp::mouseReleased(int x, int y, int button)
 {
-    draggingRectPtr = NULL;
+    draggingRectPtr = nullptr;
     isSelecting     = false;
 }

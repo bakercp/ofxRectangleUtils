@@ -1,32 +1,15 @@
-// =============================================================================
 //
-// Copyright (c) 2009-2014 Christopher Baker <http://christopherbaker.net>
+// Copyright (c) 2009 Christopher Baker <https://christopherbaker.net>
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
+// SPDX-License-Identifier:	MIT
 //
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
-//
-// =============================================================================
 
 
 #pragma once
 
 
 #include "ofConstants.h"
+#include "ofWindowSettings.h"
 
 
 /// \brief Defines an abstract rectangle packer.
@@ -34,15 +17,33 @@ template<typename T>
 class ofAbstractRectanglePacker_
 {
 public:
+    /// \brief Create a default ofAbstractRectanglePacker_.
     ofAbstractRectanglePacker_();
 
+    /// \brief Destroy the ofAbstractRectanglePacker_.
     virtual ~ofAbstractRectanglePacker_();
 
+    /// \returns the occupancy (ratio of area packed with rectangles, to empty space).
     virtual float getOccupancy() const = 0;
+
+    /// \returns the width of the rectangle packer.
     virtual T getWidth() const = 0;
+
+    /// \returns the height of the rectangle packer.
     virtual T getHeight() const = 0;
 
+    /// \brief Remove all packed rectangles.
+    virtual void reset() = 0;
+    
 protected:
+    /// \brief Pack a rectangle.
+    /// \param width The width of the rectangle to pack.
+    /// \param height The height of the rectangle to pack.
+    /// \param packedX The x-position of the packed rectangle within the packer.
+    /// \param packedY The y-position of the packed rectangle within the packer.
+    /// \param packedWidth The width of the packed rectangle within the packer.
+    /// \param packedHeight The height of the packed rectangle within the packer.
+    /// \param packedOrientation The resulting orientation of the rectangle within the packer.
     virtual bool pack(T width,
                       T height,
                       T& packedX,
